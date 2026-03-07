@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Whatever Mint - GraveLabs</title>
+<meta name="description" content="NFT minting platform on Hedera. Mint whatever you want with creative freedom.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎲</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&family=Space+Grotesk:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg: #0a0a0e;
+  --surface: #111116;
+  --accent: #ff4757;
+  --accent2: #ffa502;
+  --accent3: #2ed573;
+  --accent4: #3742fa;
+  --accent5: #ff6348;
+  --accent6: #7bed9f;
+  --text: #e8e8ee;
+  --text-mid: #888898;
+  --text-dim: #444455;
+  --border: rgba(255,255,255,0.06);
+  --pixel: 'Silkscreen', cursive;
+  --body: 'Space Grotesk', sans-serif;
+}
+
+html { background: var(--bg); color: var(--text); font-family: var(--body); scroll-behavior: smooth; overflow-x: hidden; }
+body { min-height: 100vh; -webkit-font-smoothing: antialiased; }
+a { color: inherit; text-decoration: none; }
+
+/* ── BACK LINK ── */
+.back-link {
+  position: fixed;
+  top: 32px;
+  left: 32px;
+  z-index: 100;
+  color: var(--text-dim);
+  font-size: 0.9rem;
+  font-weight: 300;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.back-link:hover {
+  color: var(--accent);
+  transform: translateX(-4px);
+}
+
+/* ── FLOATING DICE ANIMATION ── */
+.dice-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.floating-dice {
+  position: absolute;
+  font-size: 3rem;
+  opacity: 0;
+  animation: dice-float 12s ease-in-out infinite;
+}
+
+.floating-dice:nth-child(1) { left: 10%; animation-delay: 0s; }
+.floating-dice:nth-child(2) { left: 25%; animation-delay: 2s; }
+.floating-dice:nth-child(3) { left: 40%; animation-delay: 4s; }
+.floating-dice:nth-child(4) { left: 60%; animation-delay: 6s; }
+.floating-dice:nth-child(5) { left: 75%; animation-delay: 8s; }
+.floating-dice:nth-child(6) { left: 90%; animation-delay: 10s; }
+
+@keyframes dice-float {
+  0% { 
+    bottom: -80px; 
+    opacity: 0; 
+    transform: scale(0.5) rotate(0deg);
+  }
+  10% { 
+    opacity: 0.7; 
+  }
+  50% {
+    transform: scale(1.2) rotate(180deg);
+  }
+  90% { 
+    opacity: 0.4; 
+  }
+  100% { 
+    bottom: 100vh; 
+    opacity: 0; 
+    transform: scale(0.8) rotate(360deg);
+  }
+}
+
+/* ── CONFETTI BURST ── */
+.confetti-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.confetti-piece {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  opacity: 0.8;
+  animation: confetti-fall 5s ease-in infinite;
+}
+
+@keyframes confetti-fall {
+  0% {
+    top: -10px;
+    opacity: 1;
+    transform: rotate(0deg);
+  }
+  100% {
+    top: 100vh;
+    opacity: 0;
+    transform: rotate(720deg);
+  }
+}
+
+/* ── HERO ── */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 80px 24px 60px;
+  position: relative;
+  z-index: 2;
+}
+
+.hero-content {
+  max-width: 600px;
+}
+
+.icon-hero {
+  font-size: 8rem;
+  margin-bottom: 32px;
+  display: inline-block;
+  position: relative;
+  animation: dice-spin 4s ease-in-out infinite;
+  filter: drop-shadow(0 0 20px var(--accent));
+  cursor: pointer;
+}
+
+@keyframes dice-spin {
+  0%, 100% { transform: rotate(0deg) scale(1); }
+  25% { transform: rotate(90deg) scale(1.1); }
+  50% { transform: rotate(180deg) scale(1.05); }
+  75% { transform: rotate(270deg) scale(1.1); }
+}
+
+.icon-hero::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 250px;
+  height: 250px;
+  background: conic-gradient(
+    from 0deg,
+    var(--accent) 0deg,
+    var(--accent2) 60deg,
+    var(--accent3) 120deg,
+    var(--accent4) 180deg,
+    var(--accent5) 240deg,
+    var(--accent6) 300deg,
+    var(--accent) 360deg
+  );
+  transform: translate(-50%, -50%);
+  opacity: 0.3;
+  border-radius: 50%;
+  animation: rainbow-spin 6s linear infinite;
+}
+
+@keyframes rainbow-spin {
+  from { transform: translate(-50%, -50%) rotate(0deg); }
+  to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+.project-title {
+  font-family: var(--pixel);
+  font-size: clamp(3rem, 8vw, 5rem);
+  letter-spacing: 4px;
+  margin-bottom: 16px;
+  background: linear-gradient(45deg, var(--accent), var(--accent2), var(--accent3), var(--accent4));
+  background-size: 400% 400%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: rainbow-text 3s ease-in-out infinite;
+}
+
+@keyframes rainbow-text {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+.tagline {
+  font-size: 1.2rem;
+  color: var(--text-mid);
+  margin-bottom: 24px;
+  font-weight: 300;
+}
+
+.random-button {
+  font-family: var(--pixel);
+  font-size: 1rem;
+  color: var(--bg);
+  background: linear-gradient(45deg, var(--accent), var(--accent2));
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-bottom: 48px;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.random-button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 20px rgba(255,71,87,0.4);
+}
+
+/* ── FEATURES ── */
+.features {
+  padding: 80px 24px;
+  background: linear-gradient(180deg, transparent 0%, rgba(255,71,87,0.03) 100%);
+  position: relative;
+  z-index: 2;
+}
+
+.features-container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.features-title {
+  font-family: var(--pixel);
+  font-size: 2rem;
+  text-align: center;
+  margin-bottom: 64px;
+  background: linear-gradient(45deg, var(--accent), var(--accent3));
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 32px;
+}
+
+.feature-card {
+  background: rgba(17,17,22,0.8);
+  border: 2px solid var(--border);
+  border-radius: 16px;
+  padding: 32px;
+  text-align: center;
+  transition: all 0.4s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.feature-card:nth-child(1) { --card-accent: var(--accent); }
+.feature-card:nth-child(2) { --card-accent: var(--accent2); }
+.feature-card:nth-child(3) { --card-accent: var(--accent3); }
+.feature-card:nth-child(4) { --card-accent: var(--accent4); }
+
+.feature-card::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: var(--card-accent);
+  border-radius: 16px;
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.feature-card:hover {
+  transform: translateY(-8px) rotate(2deg);
+  box-shadow: 0 20px 40px rgba(255,71,87,0.3);
+}
+
+.feature-card:hover::before {
+  opacity: 1;
+}
+
+.feature-icon {
+  font-size: 2.5rem;
+  margin-bottom: 16px;
+  display: block;
+}
+
+.feature-title {
+  font-family: var(--pixel);
+  font-size: 1.1rem;
+  margin-bottom: 12px;
+  color: var(--accent);
+}
+
+.feature-desc {
+  color: var(--text-mid);
+  line-height: 1.6;
+  font-size: 0.95rem;
+}
+
+/* ── RANDOMIZER SHOWCASE ── */
+.randomizer {
+  padding: 80px 24px;
+  background: linear-gradient(45deg, rgba(255,71,87,0.05), rgba(46,213,115,0.05));
+  position: relative;
+  z-index: 2;
+}
+
+.randomizer-container {
+  max-width: 600px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.randomizer-title {
+  font-family: var(--pixel);
+  font-size: 1.5rem;
+  margin-bottom: 32px;
+  color: var(--accent2);
+}
+
+.random-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.random-item {
+  background: rgba(17,17,22,0.6);
+  border-radius: 12px;
+  padding: 16px 12px;
+  font-family: var(--pixel);
+  font-size: 0.8rem;
+  color: var(--text-mid);
+  transition: all 0.3s ease;
+}
+
+.random-item.active {
+  background: var(--accent);
+  color: var(--bg);
+  transform: scale(1.1);
+}
+
+/* ── CTA ── */
+.cta {
+  padding: 80px 24px 120px;
+  text-align: center;
+  position: relative;
+  z-index: 2;
+}
+
+.cta-button {
+  display: inline-block;
+  font-family: var(--pixel);
+  font-size: 1.2rem;
+  color: var(--bg);
+  background: linear-gradient(135deg, var(--accent), var(--accent2), var(--accent3));
+  background-size: 300% 300%;
+  padding: 20px 40px;
+  border-radius: 12px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  transition: all 0.3s ease;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  animation: rainbow-bg 4s ease-in-out infinite;
+}
+
+@keyframes rainbow-bg {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+.cta-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+  transition: left 0.5s ease;
+}
+
+.cta-button:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 15px 30px rgba(255,71,87,0.4);
+}
+
+.cta-button:hover::before {
+  left: 100%;
+}
+
+/* ── MOBILE ── */
+@media (max-width: 600px) {
+  .icon-hero { font-size: 5rem; }
+  .features-grid { grid-template-columns: 1fr; }
+  .random-grid { grid-template-columns: repeat(2, 1fr); }
+  .back-link { top: 16px; left: 16px; font-size: 0.8rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- Confetti Background -->
+<div class="confetti-container" id="confettiContainer"></div>
+
+<!-- Floating Dice Animation -->
+<div class="dice-container">
+  <div class="floating-dice">⚀</div>
+  <div class="floating-dice">⚁</div>
+  <div class="floating-dice">⚂</div>
+  <div class="floating-dice">⚃</div>
+  <div class="floating-dice">⚄</div>
+  <div class="floating-dice">⚅</div>
+</div>
+
+<!-- Back Link -->
+<a href="../index.html" class="back-link">← Back to GraveLabs</a>
+
+<!-- Hero Section -->
+<section class="hero">
+  <div class="hero-content">
+    <div class="icon-hero" id="mainDice">🎲</div>
+    <h1 class="project-title">Whatever Mint</h1>
+    <p class="tagline">NFT Minting Platform on Hedera • Mint Whatever You Want</p>
+    <button class="random-button" id="randomizeButton">🎲 Roll the Dice</button>
+  </div>
+</section>
+
+<!-- Features Section -->
+<section class="features">
+  <div class="features-container">
+    <h2 class="features-title">Creative Freedom</h2>
+    <div class="features-grid">
+      
+      <div class="feature-card">
+        <span class="feature-icon">🎨</span>
+        <h3 class="feature-title">Anything Goes</h3>
+        <p class="feature-desc">Upload any image, art, meme, or creation. No restrictions, no approval needed. Your creativity is the only limit.</p>
+      </div>
+      
+      <div class="feature-card">
+        <span class="feature-icon">⚡</span>
+        <h3 class="feature-title">Instant Minting</h3>
+        <p class="feature-desc">Fast, affordable NFT creation on Hedera. Mint your token in seconds with minimal fees and maximum speed.</p>
+      </div>
+      
+      <div class="feature-card">
+        <span class="feature-icon">🎭</span>
+        <h3 class="feature-title">Random Traits</h3>
+        <p class="feature-desc">Optional trait randomizer adds surprise elements to your NFTs. Let fate decide the rarity and attributes.</p>
+      </div>
+      
+      <div class="feature-card">
+        <span class="feature-icon">🌐</span>
+        <h3 class="feature-title">Open Marketplace</h3>
+        <p class="feature-desc">Built-in marketplace for trading your creations. Buy, sell, and discover the weird and wonderful NFTs others have minted.</p>
+      </div>
+      
+    </div>
+  </div>
+</section>
+
+<!-- Randomizer Showcase -->
+<section class="randomizer">
+  <div class="randomizer-container">
+    <h2 class="randomizer-title">Random Trait Generator</h2>
+    <div class="random-grid" id="randomGrid">
+      <div class="random-item">Legendary</div>
+      <div class="random-item">Common</div>
+      <div class="random-item">Rare</div>
+      <div class="random-item">Epic</div>
+      <div class="random-item">Shiny</div>
+      <div class="random-item">Glitched</div>
+      <div class="random-item">Holographic</div>
+      <div class="random-item">Neon</div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA Section -->
+<section class="cta">
+  <a href="https://whatevermint.com" target="_blank" class="cta-button">Start Minting →</a>
+</section>
+
+<script>
+// Dice roll animations and randomization
+const diceRoll = document.getElementById('randomizeButton');
+const mainDice = document.getElementById('mainDice');
+const randomGrid = document.getElementById('randomGrid');
+
+diceRoll.addEventListener('click', () => {
+  // Animate main dice
+  mainDice.style.animation = 'none';
+  setTimeout(() => {
+    mainDice.style.animation = 'dice-spin 0.5s ease-in-out';
+  }, 10);
+  
+  // Randomize traits
+  const items = randomGrid.querySelectorAll('.random-item');
+  items.forEach(item => item.classList.remove('active'));
+  
+  setTimeout(() => {
+    const randomItem = items[Math.floor(Math.random() * items.length)];
+    randomItem.classList.add('active');
+    
+    // Create confetti burst
+    createConfettiBurst();
+  }, 250);
+});
+
+// Confetti system
+function createConfettiBurst() {
+  const confettiContainer = document.getElementById('confettiContainer');
+  const colors = ['var(--accent)', 'var(--accent2)', 'var(--accent3)', 'var(--accent4)', 'var(--accent5)', 'var(--accent6)'];
+  
+  for (let i = 0; i < 50; i++) {
+    const confetti = document.createElement('div');
+    confetti.className = 'confetti-piece';
+    confetti.style.left = Math.random() * 100 + '%';
+    confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+    confetti.style.animationDelay = Math.random() * 2 + 's';
+    confetti.style.animationDuration = (Math.random() * 3 + 2) + 's';
+    
+    // Random shapes
+    if (Math.random() < 0.5) {
+      confetti.style.borderRadius = '50%';
+    }
+    
+    confettiContainer.appendChild(confetti);
+    
+    // Remove after animation
+    setTimeout(() => {
+      if (confetti.parentNode) {
+        confetti.parentNode.removeChild(confetti);
+      }
+    }, 5000);
+  }
+}
+
+// Auto-randomize traits every few seconds
+setInterval(() => {
+  const items = randomGrid.querySelectorAll('.random-item');
+  items.forEach(item => item.classList.remove('active'));
+  
+  setTimeout(() => {
+    const randomItem = items[Math.floor(Math.random() * items.length)];
+    randomItem.classList.add('active');
+  }, 100);
+}, 4000);
+
+// Click main dice for surprise
+mainDice.addEventListener('click', () => {
+  const diceEmojis = ['⚀', '⚁', '⚂', '⚃', '⚄', '⚅', '🎲'];
+  mainDice.textContent = diceEmojis[Math.floor(Math.random() * diceEmojis.length)];
+  createConfettiBurst();
+  
+  // Reset to dice after a moment
+  setTimeout(() => {
+    mainDice.textContent = '🎲';
+  }, 1000);
+});
+
+// Random background confetti occasionally
+setInterval(() => {
+  if (Math.random() < 0.3) { // 30% chance every 3 seconds
+    createSmallConfettiBurst();
+  }
+}, 3000);
+
+function createSmallConfettiBurst() {
+  const confettiContainer = document.getElementById('confettiContainer');
+  const colors = ['var(--accent)', 'var(--accent2)', 'var(--accent3)', 'var(--accent4)'];
+  
+  for (let i = 0; i < 10; i++) {
+    const confetti = document.createElement('div');
+    confetti.className = 'confetti-piece';
+    confetti.style.left = Math.random() * 100 + '%';
+    confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+    confetti.style.animationDelay = Math.random() * 1 + 's';
+    confetti.style.animationDuration = (Math.random() * 2 + 3) + 's';
+    confetti.style.width = '6px';
+    confetti.style.height = '6px';
+    
+    confettiContainer.appendChild(confetti);
+    
+    setTimeout(() => {
+      if (confetti.parentNode) {
+        confetti.parentNode.removeChild(confetti);
+      }
+    }, 5000);
+  }
+}
+</script>
+
+</body>
+</html>

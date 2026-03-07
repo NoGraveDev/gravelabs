@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ClawKits - GraveLabs</title>
+<meta name="description" content="AI agent starter kits and pre-built OpenClaw skill packs for rapid automation deployment.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🤖</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&family=Space+Grotesk:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg: #0a0a0e;
+  --surface: #111116;
+  --accent: #007acc;
+  --accent-glow: #00bfff;
+  --accent-dark: #005599;
+  --text: #e8e8ee;
+  --text-mid: #888898;
+  --text-dim: #444455;
+  --border: rgba(255,255,255,0.06);
+  --electric: rgba(0,122,204,0.1);
+  --pixel: 'Silkscreen', cursive;
+  --body: 'Space Grotesk', sans-serif;
+}
+
+html { background: var(--bg); color: var(--text); font-family: var(--body); scroll-behavior: smooth; overflow-x: hidden; }
+body { min-height: 100vh; -webkit-font-smoothing: antialiased; }
+a { color: inherit; text-decoration: none; }
+
+/* ── BACK LINK ── */
+.back-link {
+  position: fixed;
+  top: 32px;
+  left: 32px;
+  z-index: 100;
+  color: var(--text-dim);
+  font-size: 0.9rem;
+  font-weight: 300;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.back-link:hover {
+  color: var(--accent);
+  transform: translateX(-4px);
+}
+
+/* ── CIRCUIT BOARD ANIMATION ── */
+.circuit-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+  opacity: 0.3;
+}
+
+.circuit-line {
+  position: absolute;
+  background: var(--accent);
+  opacity: 0.4;
+}
+
+.circuit-h {
+  height: 2px;
+  animation: circuit-pulse-h 4s ease-in-out infinite;
+}
+
+.circuit-v {
+  width: 2px;
+  animation: circuit-pulse-v 4s ease-in-out infinite;
+}
+
+@keyframes circuit-pulse-h {
+  0%, 100% { 
+    box-shadow: 0 0 5px var(--accent); 
+    opacity: 0.4; 
+  }
+  50% { 
+    box-shadow: 0 0 15px var(--accent-glow); 
+    opacity: 0.8; 
+  }
+}
+
+@keyframes circuit-pulse-v {
+  0%, 100% { 
+    box-shadow: 0 0 5px var(--accent); 
+    opacity: 0.4; 
+  }
+  50% { 
+    box-shadow: 0 0 15px var(--accent-glow); 
+    opacity: 0.8; 
+  }
+}
+
+.circuit-node {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: var(--accent);
+  border-radius: 50%;
+  animation: node-pulse 3s ease-in-out infinite;
+}
+
+@keyframes node-pulse {
+  0%, 100% { 
+    transform: scale(1); 
+    box-shadow: 0 0 8px var(--accent); 
+  }
+  50% { 
+    transform: scale(1.5); 
+    box-shadow: 0 0 20px var(--accent-glow); 
+  }
+}
+
+/* ── ELECTRIC PARTICLES ── */
+.electric-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.electric-particle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: var(--accent-glow);
+  border-radius: 50%;
+  opacity: 0;
+  animation: electric-flow 5s linear infinite;
+}
+
+@keyframes electric-flow {
+  0% { 
+    opacity: 0; 
+    transform: scale(0.5); 
+  }
+  20% { 
+    opacity: 1; 
+    transform: scale(1); 
+  }
+  80% { 
+    opacity: 0.7; 
+    transform: scale(0.8); 
+  }
+  100% { 
+    opacity: 0; 
+    transform: scale(0.3); 
+  }
+}
+
+/* ── HERO ── */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 80px 24px 60px;
+  position: relative;
+  z-index: 2;
+}
+
+.hero-content {
+  max-width: 600px;
+}
+
+.icon-hero {
+  font-size: 8rem;
+  margin-bottom: 32px;
+  display: inline-block;
+  position: relative;
+  filter: drop-shadow(0 0 20px var(--accent));
+  animation: robot-movement 6s ease-in-out infinite;
+}
+
+@keyframes robot-movement {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  25% { transform: translateY(-10px) rotate(5deg); }
+  50% { transform: translateY(0) rotate(0deg); }
+  75% { transform: translateY(-5px) rotate(-3deg); }
+}
+
+.icon-hero::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 200px;
+  height: 200px;
+  background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
+  transform: translate(-50%, -50%);
+  opacity: 0.3;
+  border-radius: 50%;
+  animation: electric-aura 3s ease-in-out infinite;
+}
+
+@keyframes electric-aura {
+  0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.3; }
+  50% { transform: translate(-50%, -50%) scale(1.2); opacity: 0.5; }
+}
+
+.project-title {
+  font-family: var(--pixel);
+  font-size: clamp(3rem, 8vw, 5rem);
+  letter-spacing: 4px;
+  margin-bottom: 16px;
+  color: var(--accent);
+  text-shadow: 0 0 30px var(--accent);
+  animation: title-electric 5s ease-in-out infinite;
+}
+
+@keyframes title-electric {
+  0%, 90% { text-shadow: 0 0 30px var(--accent); }
+  95% { text-shadow: 2px 0 var(--accent-glow), -2px 0 var(--accent), 0 0 30px var(--accent); }
+  97% { text-shadow: -1px 0 var(--accent-glow), 1px 0 var(--accent), 0 0 30px var(--accent); }
+  100% { text-shadow: 0 0 30px var(--accent); }
+}
+
+.tagline {
+  font-size: 1.2rem;
+  color: var(--text-mid);
+  margin-bottom: 24px;
+  font-weight: 300;
+}
+
+.version-badge {
+  display: inline-block;
+  font-family: var(--pixel);
+  font-size: 0.8rem;
+  color: var(--accent);
+  background: rgba(0,122,204,0.1);
+  border: 1px solid var(--accent);
+  border-radius: 16px;
+  padding: 6px 12px;
+  margin-bottom: 48px;
+  animation: version-flicker 3s ease-in-out infinite;
+}
+
+@keyframes version-flicker {
+  0%, 95% { opacity: 1; }
+  97% { opacity: 0.7; }
+  99% { opacity: 1; }
+}
+
+/* ── FEATURES ── */
+.features {
+  padding: 80px 24px;
+  background: linear-gradient(180deg, transparent 0%, var(--electric) 100%);
+  position: relative;
+  z-index: 2;
+}
+
+.features-container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.features-title {
+  font-family: var(--pixel);
+  font-size: 2rem;
+  text-align: center;
+  margin-bottom: 64px;
+  color: var(--accent);
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 32px;
+}
+
+.feature-card {
+  background: rgba(17,17,22,0.8);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 32px;
+  text-align: center;
+  transition: all 0.4s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.feature-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, var(--electric), transparent);
+  transition: left 0.6s ease;
+}
+
+.feature-card:hover {
+  border-color: var(--accent);
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(0,122,204,0.3);
+}
+
+.feature-card:hover::before {
+  left: 100%;
+}
+
+.feature-icon {
+  font-size: 2.5rem;
+  margin-bottom: 16px;
+  display: block;
+}
+
+.feature-title {
+  font-family: var(--pixel);
+  font-size: 1.1rem;
+  margin-bottom: 12px;
+  color: var(--accent);
+}
+
+.feature-desc {
+  color: var(--text-mid);
+  line-height: 1.6;
+  font-size: 0.95rem;
+}
+
+/* ── SKILL PACKS ── */
+.skillpacks {
+  padding: 80px 24px;
+  background: linear-gradient(45deg, var(--electric), rgba(0,122,204,0.05));
+  position: relative;
+  z-index: 2;
+}
+
+.skillpacks-container {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.skillpacks-title {
+  font-family: var(--pixel);
+  font-size: 1.5rem;
+  text-align: center;
+  margin-bottom: 48px;
+  color: var(--accent-glow);
+}
+
+.skillpacks-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 24px;
+}
+
+.skillpack-item {
+  background: rgba(17,17,22,0.6);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px 20px;
+  text-align: center;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.skillpack-item::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border: 1px solid var(--accent);
+  border-radius: 12px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.skillpack-item:hover {
+  transform: scale(1.05);
+  background: rgba(17,17,22,0.8);
+}
+
+.skillpack-item:hover::after {
+  opacity: 1;
+}
+
+.skillpack-icon {
+  font-size: 2rem;
+  margin-bottom: 12px;
+  display: block;
+}
+
+.skillpack-name {
+  font-family: var(--pixel);
+  font-size: 0.9rem;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+
+.skillpack-desc {
+  font-size: 0.8rem;
+  color: var(--text-dim);
+  line-height: 1.4;
+}
+
+/* ── CTA ── */
+.cta {
+  padding: 80px 24px 120px;
+  text-align: center;
+  position: relative;
+  z-index: 2;
+}
+
+.cta-button {
+  display: inline-block;
+  font-family: var(--pixel);
+  font-size: 1.2rem;
+  color: var(--bg);
+  background: linear-gradient(135deg, var(--accent), var(--accent-glow));
+  padding: 20px 40px;
+  border-radius: 12px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  transition: all 0.3s ease;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.cta-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+  transition: left 0.5s ease;
+}
+
+.cta-button:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 15px 30px rgba(0,122,204,0.4);
+}
+
+.cta-button:hover::before {
+  left: 100%;
+}
+
+/* ── MOBILE ── */
+@media (max-width: 600px) {
+  .icon-hero { font-size: 5rem; }
+  .features-grid { grid-template-columns: 1fr; }
+  .skillpacks-grid { grid-template-columns: repeat(2, 1fr); }
+  .back-link { top: 16px; left: 16px; font-size: 0.8rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- Circuit Board Background -->
+<div class="circuit-bg" id="circuitBg"></div>
+
+<!-- Electric Particles -->
+<div class="electric-container" id="electricContainer"></div>
+
+<!-- Back Link -->
+<a href="../index.html" class="back-link">← Back to GraveLabs</a>
+
+<!-- Hero Section -->
+<section class="hero">
+  <div class="hero-content">
+    <div class="icon-hero">🤖</div>
+    <h1 class="project-title">ClawKits</h1>
+    <p class="tagline">AI Agent Starter Kits & OpenClaw Skill Packs</p>
+    <div class="version-badge">v2.1.0 • STABLE</div>
+  </div>
+</section>
+
+<!-- Features Section -->
+<section class="features">
+  <div class="features-container">
+    <h2 class="features-title">Automation Arsenal</h2>
+    <div class="features-grid">
+      
+      <div class="feature-card">
+        <span class="feature-icon">⚡</span>
+        <h3 class="feature-title">Instant Deployment</h3>
+        <p class="feature-desc">Pre-configured agent environments with zero setup. Clone, configure, and deploy intelligent automation in minutes.</p>
+      </div>
+      
+      <div class="feature-card">
+        <span class="feature-icon">🧩</span>
+        <h3 class="feature-title">Modular Skills</h3>
+        <p class="feature-desc">Mix-and-match skill packs for custom workflows. Email automation, social media, data processing, and hundreds more.</p>
+      </div>
+      
+      <div class="feature-card">
+        <span class="feature-icon">🎯</span>
+        <h3 class="feature-title">Business-Ready</h3>
+        <p class="feature-desc">Production-tested templates for common business tasks. CRM integration, reporting, customer service, and process automation.</p>
+      </div>
+      
+      <div class="feature-card">
+        <span class="feature-icon">🔧</span>
+        <h3 class="feature-title">Developer Tools</h3>
+        <p class="feature-desc">Advanced debugging, monitoring, and customization tools. Build, test, and scale your agent ecosystems with confidence.</p>
+      </div>
+      
+    </div>
+  </div>
+</section>
+
+<!-- Skill Packs Showcase -->
+<section class="skillpacks">
+  <div class="skillpacks-container">
+    <h2 class="skillpacks-title">Popular Skill Packs</h2>
+    <div class="skillpacks-grid">
+      
+      <div class="skillpack-item">
+        <span class="skillpack-icon">📧</span>
+        <div class="skillpack-name">Email Automation</div>
+        <div class="skillpack-desc">Smart inbox, auto-replies, newsletter management</div>
+      </div>
+      
+      <div class="skillpack-item">
+        <span class="skillpack-icon">📱</span>
+        <div class="skillpack-name">Social Media</div>
+        <div class="skillpack-desc">Cross-platform posting, engagement tracking</div>
+      </div>
+      
+      <div class="skillpack-item">
+        <span class="skillpack-icon">📊</span>
+        <div class="skillpack-name">Data Analytics</div>
+        <div class="skillpack-desc">Reports, dashboards, insights generation</div>
+      </div>
+      
+      <div class="skillpack-item">
+        <span class="skillpack-icon">🛒</span>
+        <div class="skillpack-name">E-commerce</div>
+        <div class="skillpack-desc">Inventory, orders, customer support</div>
+      </div>
+      
+      <div class="skillpack-item">
+        <span class="skillpack-icon">🏢</span>
+        <div class="skillpack-name">CRM Integration</div>
+        <div class="skillpack-desc">Lead tracking, pipeline management</div>
+      </div>
+      
+      <div class="skillpack-item">
+        <span class="skillpack-icon">🔄</span>
+        <div class="skillpack-name">Workflow Engine</div>
+        <div class="skillpack-desc">Process automation, task orchestration</div>
+      </div>
+      
+    </div>
+  </div>
+</section>
+
+<!-- CTA Section -->
+<section class="cta">
+  <a href="https://clawkits.xyz" target="_blank" class="cta-button">Get ClawKits →</a>
+</section>
+
+<script>
+// Circuit board generation
+function createCircuitBoard() {
+  const circuitBg = document.getElementById('circuitBg');
+  circuitBg.innerHTML = ''; // Clear existing
+  
+  // Horizontal lines
+  for (let i = 0; i < 8; i++) {
+    const line = document.createElement('div');
+    line.className = 'circuit-line circuit-h';
+    line.style.top = (20 + i * 120) + 'px';
+    line.style.left = '10%';
+    line.style.width = '80%';
+    line.style.animationDelay = (i * 0.5) + 's';
+    circuitBg.appendChild(line);
+  }
+  
+  // Vertical lines
+  for (let i = 0; i < 6; i++) {
+    const line = document.createElement('div');
+    line.className = 'circuit-line circuit-v';
+    line.style.left = (15 + i * 140) + 'px';
+    line.style.top = '10%';
+    line.style.height = '80%';
+    line.style.animationDelay = (i * 0.7) + 's';
+    circuitBg.appendChild(line);
+  }
+  
+  // Circuit nodes
+  for (let i = 0; i < 12; i++) {
+    const node = document.createElement('div');
+    node.className = 'circuit-node';
+    node.style.left = (Math.random() * 90 + 5) + '%';
+    node.style.top = (Math.random() * 90 + 5) + '%';
+    node.style.animationDelay = (Math.random() * 3) + 's';
+    circuitBg.appendChild(node);
+  }
+}
+
+createCircuitBoard();
+
+// Electric particles flowing along circuits
+function createElectricParticle() {
+  const container = document.getElementById('electricContainer');
+  const particle = document.createElement('div');
+  particle.className = 'electric-particle';
+  
+  // Random path (horizontal or vertical)
+  if (Math.random() < 0.5) {
+    // Horizontal movement
+    particle.style.top = (20 + Math.floor(Math.random() * 8) * 120) + 'px';
+    particle.style.left = '0%';
+    particle.style.animation = 'electric-flow 3s linear infinite';
+    particle.style.animationName = 'electric-flow-h';
+    
+    // Create horizontal flow animation
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes electric-flow-h {
+        0% { left: 10%; opacity: 0; }
+        20% { opacity: 1; }
+        80% { opacity: 0.7; }
+        100% { left: 90%; opacity: 0; }
+      }
+    `;
+    document.head.appendChild(style);
+    particle.style.animation = 'electric-flow-h 2s linear infinite';
+  } else {
+    // Vertical movement
+    particle.style.left = (15 + Math.floor(Math.random() * 6) * 140) + 'px';
+    particle.style.top = '0%';
+    
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes electric-flow-v {
+        0% { top: 10%; opacity: 0; }
+        20% { opacity: 1; }
+        80% { opacity: 0.7; }
+        100% { top: 90%; opacity: 0; }
+      }
+    `;
+    document.head.appendChild(style);
+    particle.style.animation = 'electric-flow-v 2.5s linear infinite';
+  }
+  
+  container.appendChild(particle);
+  
+  // Remove after animation
+  setTimeout(() => {
+    if (particle.parentNode) {
+      particle.parentNode.removeChild(particle);
+    }
+  }, 3000);
+}
+
+// Create electric particles periodically
+setInterval(createElectricParticle, 500);
+
+// Robot icon interaction
+document.querySelector('.icon-hero').addEventListener('click', function() {
+  this.style.animation = 'none';
+  setTimeout(() => {
+    this.style.animation = 'robot-movement 1s ease-in-out';
+  }, 10);
+  
+  // Burst of electric particles
+  for (let i = 0; i < 10; i++) {
+    setTimeout(createElectricParticle, i * 50);
+  }
+});
+
+// Dynamic version badge updates
+const versionBadge = document.querySelector('.version-badge');
+const versions = ['v2.1.0 • STABLE', 'v2.1.1 • UPDATED', 'v2.2.0 • BETA', 'v2.1.0 • STABLE'];
+let versionIndex = 0;
+
+setInterval(() => {
+  versionIndex = (versionIndex + 1) % versions.length;
+  versionBadge.textContent = versions[versionIndex];
+}, 5000);
+</script>
+
+</body>
+</html>

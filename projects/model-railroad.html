@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Model Railroad Inventory - GraveLabs</title>
+<meta name="description" content="Track and manage your model train collection with ease.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚂</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&family=Space+Grotesk:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg: #0a0a0e;
+  --surface: #111116;
+  --accent: #d4915e;
+  --accent-glow: #e8a86d;
+  --track: #8b6914;
+  --text: #e8e8ee;
+  --text-mid: #888898;
+  --text-dim: #444455;
+  --border: rgba(255,255,255,0.06);
+  --pixel: 'Silkscreen', cursive;
+  --body: 'Space Grotesk', sans-serif;
+}
+
+html { background: var(--bg); color: var(--text); font-family: var(--body); scroll-behavior: smooth; overflow-x: hidden; }
+body { min-height: 100vh; -webkit-font-smoothing: antialiased; }
+a { color: inherit; text-decoration: none; }
+
+.back-link {
+  position: fixed;
+  top: 32px;
+  left: 32px;
+  z-index: 100;
+  color: var(--text-dim);
+  font-size: 0.9rem;
+  font-weight: 300;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.back-link:hover { color: var(--accent); transform: translateX(-4px); }
+
+/* ── HERO ── */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 50% 50%, rgba(212,145,94,0.08) 0%, transparent 60%);
+}
+
+/* ── STEAM PARTICLES ── */
+canvas#steam {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+/* ── TRACK LINES ── */
+.track-line {
+  position: absolute;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(139,105,20,0.3), transparent);
+  animation: track-slide 8s linear infinite;
+}
+@keyframes track-slide {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100vw); }
+}
+
+.hero-content { position: relative; z-index: 2; max-width: 600px; padding: 0 24px; }
+
+.icon-wrap {
+  width: 140px;
+  height: 140px;
+  margin: 0 auto 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 4.5rem;
+  position: relative;
+}
+.icon-wrap::after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  width: 120px;
+  height: 4px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, transparent, var(--track), transparent);
+}
+
+.train-chug {
+  animation: chug 0.6s ease-in-out infinite alternate;
+}
+@keyframes chug {
+  0% { transform: translateX(-2px) rotate(-0.5deg); }
+  100% { transform: translateX(2px) rotate(0.5deg); }
+}
+
+.title {
+  font-family: var(--pixel);
+  font-size: clamp(1.5rem, 4vw, 2.5rem);
+  letter-spacing: 2px;
+  margin-bottom: 12px;
+}
+.title span { color: var(--accent); }
+
+.tagline {
+  color: var(--text-mid);
+  font-size: 1.05rem;
+  font-weight: 300;
+  margin-bottom: 8px;
+  line-height: 1.6;
+}
+
+.sub-tagline {
+  color: var(--text-dim);
+  font-size: 0.8rem;
+  font-weight: 300;
+  margin-bottom: 36px;
+}
+
+.cta-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 32px;
+  border: 1px solid var(--accent);
+  border-radius: 8px;
+  color: var(--accent);
+  font-weight: 500;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  background: transparent;
+}
+.cta-btn:hover {
+  background: var(--accent);
+  color: var(--bg);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(212,145,94,0.3);
+}
+
+/* ── FEATURES ── */
+.features {
+  padding: 100px 24px 120px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.section-label {
+  font-family: var(--pixel);
+  font-size: 0.75rem;
+  color: var(--accent);
+  letter-spacing: 2px;
+  margin-bottom: 48px;
+  text-align: center;
+}
+
+.feature-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+}
+
+.feature-card {
+  padding: 32px 28px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  transition: all 0.4s ease;
+  opacity: 0;
+  transform: translateY(24px);
+}
+.feature-card.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.feature-card:hover {
+  border-color: rgba(212,145,94,0.25);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(212,145,94,0.08);
+}
+
+.feature-icon { font-size: 1.8rem; margin-bottom: 16px; }
+.feature-title { font-weight: 500; font-size: 1.05rem; margin-bottom: 10px; }
+.feature-desc { color: var(--text-mid); font-size: 0.85rem; font-weight: 300; line-height: 1.6; }
+
+/* ── GAUGE ── */
+.gauge-section {
+  text-align: center;
+  padding: 40px 24px 80px;
+}
+.gauge-wrap {
+  display: inline-flex;
+  gap: 40px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.gauge {
+  text-align: center;
+}
+.gauge-num {
+  font-family: var(--pixel);
+  font-size: 2.5rem;
+  color: var(--accent);
+}
+.gauge-label {
+  color: var(--text-dim);
+  font-size: 0.75rem;
+  margin-top: 4px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+footer {
+  border-top: 1px solid var(--border);
+  padding: 32px 0;
+  text-align: center;
+}
+.footer-text { font-size: 0.7rem; color: var(--text-dim); letter-spacing: 1px; }
+
+@media (max-width: 600px) {
+  .back-link { top: 16px; left: 16px; }
+  .track-line { display: none; }
+  .feature-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<a href="../index.html" class="back-link">← GraveLabs</a>
+
+<section class="hero">
+  <div class="hero-bg"></div>
+  <canvas id="steam"></canvas>
+
+  <div class="track-line" style="top:30%;width:60%;left:-10%;animation-delay:0s;"></div>
+  <div class="track-line" style="top:55%;width:45%;right:-10%;animation-delay:-3s;"></div>
+  <div class="track-line" style="bottom:20%;width:70%;left:-5%;animation-delay:-5s;"></div>
+
+  <div class="hero-content">
+    <div class="icon-wrap"><span class="train-chug">🚂</span></div>
+    <div class="title">Model Railroad <span>Inventory</span></div>
+    <div class="tagline">Track, catalog, and manage your entire model train collection.</div>
+    <div class="sub-tagline">From HO to N scale — every locomotive, car, and accessory accounted for.</div>
+    <a href="https://modelrailroadinventory.com" target="_blank" class="cta-btn">Visit Site <span>→</span></a>
+  </div>
+</section>
+
+<section class="features">
+  <div class="section-label">Features</div>
+  <div class="feature-grid">
+    <div class="feature-card">
+      <div class="feature-icon">📋</div>
+      <div class="feature-title">Full Collection Catalog</div>
+      <div class="feature-desc">Log every piece — locomotives, rolling stock, track, scenery, and accessories with photos, condition, and value tracking.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🔍</div>
+      <div class="feature-title">Search & Filter</div>
+      <div class="feature-desc">Find any item instantly by manufacturer, scale, era, road name, or custom tags. Your collection, instantly searchable.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">💰</div>
+      <div class="feature-title">Value Tracking</div>
+      <div class="feature-desc">Track purchase prices, current values, and total collection worth. Know exactly what your hobby is worth.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">📱</div>
+      <div class="feature-title">Mobile Friendly</div>
+      <div class="feature-desc">Access your inventory from any device. Perfect for checking your catalog at swap meets, shows, and hobby shops.</div>
+    </div>
+  </div>
+</section>
+
+<section class="gauge-section">
+  <div class="gauge-wrap">
+    <div class="gauge"><div class="gauge-num" id="g1">0</div><div class="gauge-label">Scales Supported</div></div>
+    <div class="gauge"><div class="gauge-num" id="g2">0</div><div class="gauge-label">Data Fields</div></div>
+    <div class="gauge"><div class="gauge-num" id="g3">0</div><div class="gauge-label">Export Formats</div></div>
+  </div>
+</section>
+
+<footer>
+  <span class="footer-text">© 2026 GraveLabs</span>
+</footer>
+
+<script>
+(function(){
+  // Feature card reveals
+  const cards = document.querySelectorAll('.feature-card');
+  const obs = new IntersectionObserver(function(entries){
+    entries.forEach(function(e,i){
+      if(e.isIntersecting){
+        setTimeout(function(){ e.target.classList.add('visible'); }, i * 120);
+        obs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  cards.forEach(function(c){ obs.observe(c); });
+
+  // Steam particles
+  const canvas = document.getElementById('steam');
+  const ctx = canvas.getContext('2d');
+  let particles = [];
+  function resize(){ canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+  resize();
+  window.addEventListener('resize', resize);
+
+  function spawnSteam(){
+    if(particles.length < 60){
+      particles.push({
+        x: Math.random() * canvas.width,
+        y: canvas.height + 10,
+        vx: (Math.random()-0.5)*0.5,
+        vy: -(0.3 + Math.random()*0.5),
+        r: 2 + Math.random()*4,
+        life: 1,
+        decay: 0.002 + Math.random()*0.003
+      });
+    }
+  }
+
+  function animSteam(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    for(let i=particles.length-1;i>=0;i--){
+      const p = particles[i];
+      p.x += p.vx;
+      p.y += p.vy;
+      p.r += 0.02;
+      p.life -= p.decay;
+      if(p.life <= 0){ particles.splice(i,1); continue; }
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
+      ctx.fillStyle = 'rgba(212,145,94,' + (p.life * 0.15) + ')';
+      ctx.fill();
+    }
+    spawnSteam();
+    requestAnimationFrame(animSteam);
+  }
+  animSteam();
+
+  // Counter animation for gauges
+  function countUp(el, target, duration){
+    let start = 0;
+    const step = target / (duration / 16);
+    function tick(){
+      start += step;
+      if(start >= target){ el.textContent = target; return; }
+      el.textContent = Math.floor(start);
+      requestAnimationFrame(tick);
+    }
+    tick();
+  }
+  const gObs = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){
+        countUp(document.getElementById('g1'), 12, 1200);
+        countUp(document.getElementById('g2'), 40, 1500);
+        countUp(document.getElementById('g3'), 5, 800);
+        gObs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.3 });
+  gObs.observe(document.querySelector('.gauge-section'));
+})();
+</script>
+</body>
+</html>
