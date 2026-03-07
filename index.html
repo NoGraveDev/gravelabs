@@ -495,6 +495,20 @@ import * as THREE from 'three';
     scene.add(pfpRing);
   });
 
+  // Snow particles
+  const snowCount = 600;
+  const snowGeo = new THREE.BufferGeometry();
+  const snowPos = new Float32Array(snowCount*3);
+  for(let i=0;i<snowCount;i++){
+    snowPos[i*3] = (Math.random()-0.5)*1200;
+    snowPos[i*3+1] = Math.random()*400+50;
+    snowPos[i*3+2] = (Math.random()-0.5)*1200;
+  }
+  snowGeo.setAttribute('position',new THREE.BufferAttribute(snowPos,3));
+  const snowMat = new THREE.PointsMaterial({color:0xffffff,size:3,transparent:true,opacity:0.7,depthWrite:false});
+  const snow = new THREE.Points(snowGeo,snowMat);
+  scene.add(snow);
+
   // Auto-rotate + animate
   let angle = 0, time = 0;
   function animate(){
@@ -512,6 +526,15 @@ import * as THREE from 'three';
       const a = d.offset + time*d.speed;
       m.position.set(Math.cos(a)*d.orbitR, d.baseY+Math.sin(a*0.7)*25, Math.sin(a)*d.orbitR*0.5);
     }
+
+    // Snow fall
+    const sp = snow.geometry.attributes.position.array;
+    for(let i=0;i<snowCount;i++){
+      sp[i*3+1] -= 0.8 + Math.sin(i)*0.3;
+      sp[i*3] += Math.sin(time*0.5+i)*0.15;
+      if(sp[i*3+1]<-10){sp[i*3+1]=350+Math.random()*100;sp[i*3]=(Math.random()-0.5)*1200;sp[i*3+2]=(Math.random()-0.5)*1200;}
+    }
+    snow.geometry.attributes.position.needsUpdate = true;
 
     // Wander PFP
     if(pfpMesh){
