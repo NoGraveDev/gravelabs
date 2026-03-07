@@ -442,38 +442,93 @@ import * as THREE from 'three';
   water.position.y = -2;
   scene.add(water);
 
-  // PFP floating above center
+  // Seven Moons
+  const moonData = [
+    {name:'Emberhowl',color:0xFF6B00,cycle:18},
+    {name:'Solaris',color:0xF1C40F,cycle:12},
+    {name:'Deepwell',color:0x3498DB,cycle:13},
+    {name:'Evergreen',color:0x2ECC71,cycle:18},
+    {name:'Umbra',color:0x9B6EFF,cycle:14},
+    {name:'Roseglow',color:0xFF69B4,cycle:11},
+    {name:'Palehowl',color:0xdddddd,cycle:30}
+  ];
+  const moonMeshes = [];
+  for(let i=0;i<7;i++){
+    const md = moonData[i];
+    const r = i===6 ? 4 : 7;
+    const mat = new THREE.MeshStandardMaterial({color:md.color,emissive:md.color,emissiveIntensity:0.9,transparent:true,opacity:0.95});
+    const moon = new THREE.Mesh(new THREE.SphereGeometry(r,24,16),mat);
+    // Glow
+    const glowGeo = new THREE.SphereGeometry(r*1.6,16,12);
+    const glowMat = new THREE.MeshBasicMaterial({color:md.color,transparent:true,opacity:0.08});
+    const glow = new THREE.Mesh(glowGeo,glowMat);
+    moon.add(glow);
+    moon.userData = {orbitR:i===6?250:350,baseY:i===6?280:320,speed:(1/md.cycle)*0.3,offset:(i/7)*Math.PI*2};
+    scene.add(moon);
+    moonMeshes.push(moon);
+  }
+
+  // Wandering PFP
+  let pfpMesh = null, pfpRing = null;
+  let wanderAngle = 0, wanderRadius = 150, wanderTarget = {x:0,z:0}, wanderPos = {x:0,z:0};
+  function newWanderTarget(){
+    const a = Math.random()*Math.PI*2;
+    const r = 80 + Math.random()*250;
+    wanderTarget.x = Math.cos(a)*r;
+    wanderTarget.z = Math.sin(a)*r;
+  }
+  newWanderTarget();
+
   const loader = new THREE.TextureLoader();
   loader.load('wizard-dog.jpg',function(tex){
     tex.colorSpace = THREE.SRGBColorSpace;
-    const pfpGeo = new THREE.PlaneGeometry(60,60);
+    const pfpGeo = new THREE.PlaneGeometry(40,40);
     const pfpMat = new THREE.MeshBasicMaterial({map:tex,transparent:true,side:THREE.DoubleSide});
-    const pfp = new THREE.Mesh(pfpGeo,pfpMat);
-    pfp.position.set(0,80,0);
-    pfp.lookAt(camera.position);
-    pfp.userData.billboard = true;
-    scene.add(pfp);
-
+    pfpMesh = new THREE.Mesh(pfpGeo,pfpMat);
+    pfpMesh.userData.billboard = true;
+    scene.add(pfpMesh);
     // Glow ring under pfp
-    const ringGeo = new THREE.RingGeometry(25,35,32);
-    const ringMat = new THREE.MeshBasicMaterial({color:0x00e5ff,transparent:true,opacity:0.15,side:THREE.DoubleSide});
-    const ring = new THREE.Mesh(ringGeo,ringMat);
-    ring.rotation.x = -Math.PI/2;
-    ring.position.set(0,getH(0,0)+3,0);
-    scene.add(ring);
+    const ringGeo = new THREE.RingGeometry(15,22,32);
+    const ringMat = new THREE.MeshBasicMaterial({color:0x00e5ff,transparent:true,opacity:0.12,side:THREE.DoubleSide});
+    pfpRing = new THREE.Mesh(ringGeo,ringMat);
+    pfpRing.rotation.x = -Math.PI/2;
+    scene.add(pfpRing);
   });
 
-  // Auto-rotate
-  let angle = 0;
+  // Auto-rotate + animate
+  let angle = 0, time = 0;
   function animate(){
     requestAnimationFrame(animate);
     angle += 0.003;
+    time += 0.016;
     camera.position.x = Math.sin(angle)*700;
     camera.position.z = Math.cos(angle)*700;
     camera.position.y = 450;
     camera.lookAt(0,20,0);
-    // Billboard PFP
-    scene.traverse(function(o){if(o.userData.billboard)o.lookAt(camera.position);});
+
+    // Moons orbit
+    for(const m of moonMeshes){
+      const d = m.userData;
+      const a = d.offset + time*d.speed;
+      m.position.set(Math.cos(a)*d.orbitR, d.baseY+Math.sin(a*0.7)*25, Math.sin(a)*d.orbitR*0.5);
+    }
+
+    // Wander PFP
+    if(pfpMesh){
+      const dx = wanderTarget.x-wanderPos.x, dz = wanderTarget.z-wanderPos.z;
+      const dist = Math.sqrt(dx*dx+dz*dz);
+      if(dist<10) newWanderTarget();
+      const speed = 0.4;
+      wanderPos.x += (dx/dist)*speed;
+      wanderPos.z += (dz/dist)*speed;
+      const h = getH(wanderPos.x,wanderPos.z);
+      pfpMesh.position.set(wanderPos.x, h+45, wanderPos.z);
+      pfpMesh.lookAt(camera.position);
+      if(pfpRing){
+        pfpRing.position.set(wanderPos.x, h+2, wanderPos.z);
+      }
+    }
+
     renderer.render(scene,camera);
   }
   animate();
