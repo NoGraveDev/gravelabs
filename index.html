@@ -229,6 +229,7 @@ footer {
     </div>
     <div class="brand reveal">Grave<span>Labs</span></div>
     <div class="tagline reveal">Audio engineer · Musician · Web3 Wizard</div>
+    <div id="map3d" class="reveal" style="width:280px;height:280px;margin:24px auto;"></div>
     <div class="socials reveal">
       <a href="https://x.com/GraveMetaX" target="_blank">𝕏</a>
       <a href="mailto:NoGraveStudios@gmail.com">Email</a>
@@ -369,6 +370,115 @@ footer {
 <footer>
   <span class="footer-text">© 2026 GraveLabs</span>
 </footer>
+
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js"}}</script>
+<script type="module">
+import * as THREE from 'three';
+
+(function(){
+  const container = document.getElementById('map3d');
+  if(!container) return;
+  const W = 280, H = 280;
+
+  // Simplex noise
+  class SN{constructor(seed=0){this.grad3=[[1,1,0],[-1,1,0],[1,-1,0],[-1,-1,0],[1,0,1],[-1,0,1],[1,0,-1],[-1,0,-1],[0,1,1],[0,-1,1],[0,1,-1],[0,-1,-1]];this.p=[];for(let i=0;i<256;i++)this.p[i]=i;let n,s=seed;for(let i=255;i>0;i--){s=(s*16807+0)%2147483647;n=s%(i+1);[this.p[i],this.p[n]]=[this.p[n],this.p[i]];}this.perm=new Uint8Array(512);this.permMod12=new Uint8Array(512);for(let i=0;i<512;i++){this.perm[i]=this.p[i&255];this.permMod12[i]=this.perm[i]%12;}}noise2D(x,y){const F2=0.5*(Math.sqrt(3)-1),G2=(3-Math.sqrt(3))/6;const s=(x+y)*F2;const i=Math.floor(x+s),j=Math.floor(y+s);const t=(i+j)*G2;const x0=x-(i-t),y0=y-(j-t);const i1=x0>y0?1:0,j1=x0>y0?0:1;const x1=x0-i1+G2,y1=y0-j1+G2,x2=x0-1+2*G2,y2=y0-1+2*G2;const ii=i&255,jj=j&255;const gi0=this.permMod12[ii+this.perm[jj]],gi1=this.permMod12[ii+i1+this.perm[jj+j1]],gi2=this.permMod12[ii+1+this.perm[jj+1]];let n0=0,n1=0,n2=0;let t0=0.5-x0*x0-y0*y0;if(t0>0){t0*=t0;const g=this.grad3[gi0];n0=t0*t0*(g[0]*x0+g[1]*y0);}let t1=0.5-x1*x1-y1*y1;if(t1>0){t1*=t1;const g=this.grad3[gi1];n1=t1*t1*(g[0]*x1+g[1]*y1);}let t2=0.5-x2*x2-y2*y2;if(t2>0){t2*=t2;const g=this.grad3[gi2];n2=t2*t2*(g[0]*x2+g[1]*y2);}return 70*(n0+n1+n2);}}
+
+  const noise = new SN(42), noise2 = new SN(137);
+
+  // Realms (simplified positions + colors)
+  const realms = {
+    'Frosthollow':{x:-350,z:-300,c:[0.85,0.92,1.0],c2:[0.6,0.75,0.95],elev:80},
+    'Abyssal':{x:0,z:-350,c:[0.25,0.3,0.4],c2:[0.15,0.2,0.35],elev:20},
+    'Sunward':{x:350,z:-300,c:[1.0,0.92,0.7],c2:[0.95,0.85,0.6],elev:65},
+    'Ember':{x:400,z:100,c:[0.25,0.18,0.12],c2:[0.5,0.2,0.05],elev:45},
+    'Deepwood':{x:250,z:350,c:[0.15,0.35,0.12],c2:[0.2,0.45,0.15],elev:15},
+    'Violet':{x:-300,z:300,c:[0.4,0.28,0.5],c2:[0.35,0.22,0.45],elev:55},
+    'Shadowmire':{x:0,z:400,c:[0.12,0.15,0.08],c2:[0.18,0.2,0.1],elev:-5},
+    'Starter':{x:0,z:0,c:[0.45,0.55,0.35],c2:[0.5,0.6,0.4],elev:10}
+  };
+
+  function realmInf(x,z){const inf={};let tw=0;for(const[n,r]of Object.entries(realms)){const dx=x-r.x,dz=z-r.z,d=Math.sqrt(dx*dx+dz*dz),w=Math.pow(Math.max(0,1-d/400),2.5);if(w>0){inf[n]=w;tw+=w;}}if(tw===0)return{Starter:1};for(const k in inf)inf[k]/=tw;return inf;}
+
+  function getH(x,z){const inf=realmInf(x,z);let be=0;for(const[n,w]of Object.entries(inf))be+=(realms[n]?.elev||10)*w;let n0=noise.noise2D(x*0.004,z*0.004)*30;n0+=noise.noise2D(x*0.01,z*0.01)*12;n0+=noise2.noise2D(x*0.025,z*0.025)*5;const fh=inf.Frosthollow||0;if(fh>0.1){n0+=Math.abs(noise.noise2D(x*0.015,z*0.015))*80*fh;n0+=Math.abs(noise2.noise2D(x*0.03,z*0.03))*30*fh;}const ew=inf.Ember||0;if(ew>0.1){const cal=noise.noise2D(x*0.008+5,z*0.008+5);if(cal>0.3)n0-=25*ew*(cal-0.3)*3;else n0+=20*ew;}const sh=inf.Sunward||0;if(sh>0.2){const pl=noise.noise2D(x*0.005+10,z*0.005+10);n0+=(pl>0?40:15)*sh;}const vh=inf.Violet||0;if(vh>0.1){const te=noise.noise2D(x*0.006,z*0.006)*40*vh;n0+=Math.round(te/10)*10;}return be+n0;}
+
+  function getCol(x,z,h){const inf=realmInf(x,z);let r=0,g=0,b=0;for(const[n,w]of Object.entries(inf)){const rm=realms[n];if(!rm)continue;const t=Math.min(1,Math.max(0,(h-(rm.elev-20))/60));const cr=rm.c[0]+(rm.c2[0]-rm.c[0])*(1-t),cg=rm.c[1]+(rm.c2[1]-rm.c[1])*(1-t),cb=rm.c[2]+(rm.c2[2]-rm.c[2])*(1-t);r+=cr*w;g+=cg*w;b+=cb*w;}return[r,g,b];}
+
+  // Renderer
+  const renderer = new THREE.WebGLRenderer({antialias:true,alpha:true});
+  renderer.setSize(W,H);
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
+  renderer.toneMapping = THREE.ACESFilmicToneMapping;
+  renderer.toneMappingExposure = 1.1;
+  container.appendChild(renderer.domElement);
+
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(40,1,1,3000);
+  camera.position.set(0,500,600);
+  camera.lookAt(0,0,0);
+
+  // Lighting
+  scene.add(new THREE.AmbientLight(0xfff0dd,0.4));
+  const sun = new THREE.DirectionalLight(0xfff4e0,1.2);
+  sun.position.set(200,400,-100);
+  scene.add(sun);
+  scene.add(new THREE.HemisphereLight(0x8899bb,0x334422,0.3));
+
+  // Terrain
+  const subs = 80;
+  const geo = new THREE.PlaneGeometry(1100,1100,subs,subs);
+  geo.rotateX(-Math.PI/2);
+  const pos = geo.attributes.position;
+  const cols = new Float32Array(pos.count*3);
+  for(let i=0;i<pos.count;i++){const x=pos.getX(i),z=pos.getZ(i),h=getH(x,z);pos.setY(i,h);const c=getCol(x,z,h);cols[i*3]=c[0];cols[i*3+1]=c[1];cols[i*3+2]=c[2];}
+  geo.setAttribute('color',new THREE.Float32BufferAttribute(cols,3));
+  geo.computeVertexNormals();
+  const terrain = new THREE.Mesh(geo,new THREE.MeshStandardMaterial({vertexColors:true,roughness:0.85,metalness:0.05}));
+  scene.add(terrain);
+
+  // Water
+  const wGeo = new THREE.PlaneGeometry(1400,1400);
+  wGeo.rotateX(-Math.PI/2);
+  const water = new THREE.Mesh(wGeo,new THREE.MeshPhysicalMaterial({color:0x0a2040,transparent:true,opacity:0.7,roughness:0.15,metalness:0.3}));
+  water.position.y = -2;
+  scene.add(water);
+
+  // PFP floating above center
+  const loader = new THREE.TextureLoader();
+  loader.load('wizard-dog.jpg',function(tex){
+    tex.colorSpace = THREE.SRGBColorSpace;
+    const pfpGeo = new THREE.PlaneGeometry(60,60);
+    const pfpMat = new THREE.MeshBasicMaterial({map:tex,transparent:true,side:THREE.DoubleSide});
+    const pfp = new THREE.Mesh(pfpGeo,pfpMat);
+    pfp.position.set(0,80,0);
+    pfp.lookAt(camera.position);
+    pfp.userData.billboard = true;
+    scene.add(pfp);
+
+    // Glow ring under pfp
+    const ringGeo = new THREE.RingGeometry(25,35,32);
+    const ringMat = new THREE.MeshBasicMaterial({color:0x00e5ff,transparent:true,opacity:0.15,side:THREE.DoubleSide});
+    const ring = new THREE.Mesh(ringGeo,ringMat);
+    ring.rotation.x = -Math.PI/2;
+    ring.position.set(0,getH(0,0)+3,0);
+    scene.add(ring);
+  });
+
+  // Auto-rotate
+  let angle = 0;
+  function animate(){
+    requestAnimationFrame(animate);
+    angle += 0.003;
+    camera.position.x = Math.sin(angle)*700;
+    camera.position.z = Math.cos(angle)*700;
+    camera.position.y = 450;
+    camera.lookAt(0,20,0);
+    // Billboard PFP
+    scene.traverse(function(o){if(o.userData.billboard)o.lookAt(camera.position);});
+    renderer.render(scene,camera);
+  }
+  animate();
+})();
+</script>
 
 <script>
 (function() {
