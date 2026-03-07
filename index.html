@@ -1,0 +1,1094 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GraveLabs — Digital Products. Web3 Infrastructure. AI Systems.</title>
+<meta name="description" content="GraveLabs — Digital products, Web3 infrastructure, and AI systems. A one-person operation shipping relentlessly from Gray, Georgia.">
+<meta property="og:title" content="GraveLabs — We Ship Things">
+<meta property="og:description" content="Digital products. Web3 infrastructure. AI systems. 11 live projects and counting.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="wizard-dog.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@GraveMetaX">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg: #08080c;
+  --bg-alt: #0c0c14;
+  --surface: #111118;
+  --surface-hover: #16161f;
+  --accent: #00e5ff;
+  --accent-dim: rgba(0, 229, 255, 0.12);
+  --accent-glow: rgba(0, 229, 255, 0.25);
+  --green: #00ff88;
+  --green-dim: rgba(0, 255, 136, 0.1);
+  --amber: #ffb800;
+  --red: #ff3d5a;
+  --text: #e4e4ec;
+  --text-mid: #9090a8;
+  --text-dim: #505068;
+  --border: rgba(255, 255, 255, 0.06);
+  --border-accent: rgba(0, 229, 255, 0.15);
+  --font-pixel: 'Silkscreen', cursive;
+  --font-body: 'Space Grotesk', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+  --max-w: 1200px;
+  --gap: clamp(1rem, 3vw, 2rem);
+}
+
+html {
+  scroll-behavior: smooth;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  scrollbar-width: thin;
+  scrollbar-color: #1a1a28 var(--bg);
+}
+
+body {
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+}
+
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: #1a1a28; border-radius: 10px; }
+
+/* ── NOISE OVERLAY ── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* ── SCANLINES ── */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 0, 0, 0.03) 2px,
+    rgba(0, 0, 0, 0.03) 4px
+  );
+  pointer-events: none;
+  z-index: 9998;
+}
+
+/* ── LAYOUT ── */
+.wrap {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  padding: 0 var(--gap);
+}
+
+section {
+  padding: clamp(4rem, 10vh, 8rem) 0;
+}
+
+/* ── NAV ── */
+nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  background: rgba(8, 8, 12, 0.85);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  transition: transform 0.3s ease;
+}
+
+nav .wrap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 56px;
+}
+
+.nav-logo {
+  font-family: var(--font-pixel);
+  font-size: 0.85rem;
+  color: var(--accent);
+  letter-spacing: 2px;
+  text-decoration: none;
+}
+
+.nav-logo span {
+  color: var(--text-dim);
+}
+
+.nav-links {
+  display: flex;
+  gap: 2rem;
+  list-style: none;
+}
+
+.nav-links a {
+  color: var(--text-mid);
+  text-decoration: none;
+  font-size: 0.8rem;
+  font-family: var(--font-mono);
+  letter-spacing: 0.5px;
+  transition: color 0.2s;
+}
+
+.nav-links a:hover {
+  color: var(--accent);
+}
+
+/* ── HERO ── */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  position: relative;
+  padding-top: 56px;
+}
+
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: center;
+  width: 100%;
+}
+
+.hero-left {
+  position: relative;
+}
+
+.hero-tag {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--green);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.hero-tag::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  background: var(--green);
+  border-radius: 50%;
+  animation: pulse-dot 2s ease infinite;
+  flex-shrink: 0;
+}
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(0, 255, 136, 0.5); }
+  50% { opacity: 0.7; box-shadow: 0 0 0 6px rgba(0, 255, 136, 0); }
+}
+
+.hero-title {
+  font-family: var(--font-pixel);
+  font-size: clamp(2.5rem, 6vw, 4.5rem);
+  line-height: 1.1;
+  color: var(--text);
+  margin-bottom: 1.5rem;
+  letter-spacing: 1px;
+}
+
+.hero-title .accent {
+  color: var(--accent);
+  text-shadow: 0 0 40px var(--accent-glow);
+}
+
+.hero-sub {
+  font-size: clamp(1rem, 2vw, 1.2rem);
+  color: var(--text-mid);
+  line-height: 1.7;
+  max-width: 500px;
+  margin-bottom: 2.5rem;
+  font-weight: 300;
+}
+
+/* stats row */
+.stats-row {
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.stat-num {
+  font-family: var(--font-pixel);
+  font-size: 1.5rem;
+  color: var(--accent);
+}
+
+.stat-label {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+}
+
+/* hero right — PFP terminal */
+.hero-right {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.terminal-frame {
+  background: var(--surface);
+  border: 1px solid var(--border-accent);
+  border-radius: 12px;
+  overflow: hidden;
+  width: 100%;
+  max-width: 420px;
+  box-shadow:
+    0 0 60px rgba(0, 229, 255, 0.06),
+    0 20px 60px rgba(0, 0, 0, 0.5);
+}
+
+.terminal-bar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 14px;
+  background: rgba(255, 255, 255, 0.02);
+  border-bottom: 1px solid var(--border);
+}
+
+.terminal-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.terminal-dot.r { background: var(--red); }
+.terminal-dot.y { background: var(--amber); }
+.terminal-dot.g { background: var(--green); }
+
+.terminal-title {
+  flex: 1;
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  color: var(--text-dim);
+  letter-spacing: 1px;
+}
+
+.terminal-body {
+  padding: 16px;
+}
+
+.pfp-wrapper {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid var(--border-accent);
+}
+
+.pfp-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  filter: saturate(1.1);
+}
+
+.pfp-wrapper::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 60%, rgba(0, 229, 255, 0.08) 100%);
+  pointer-events: none;
+}
+
+.terminal-info {
+  padding: 12px 16px 16px;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--text-mid);
+  line-height: 1.8;
+}
+
+.terminal-info .prompt {
+  color: var(--green);
+}
+
+.terminal-info .cmd {
+  color: var(--text);
+}
+
+.terminal-info .output {
+  color: var(--text-dim);
+}
+
+/* ── SECTION HEADERS ── */
+.section-header {
+  margin-bottom: 3rem;
+}
+
+.section-header .label {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.section-header .label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border-accent);
+}
+
+.section-header h2 {
+  font-family: var(--font-pixel);
+  font-size: clamp(1.5rem, 3.5vw, 2.2rem);
+  color: var(--text);
+  letter-spacing: 1px;
+}
+
+/* ── PROJECT GRID ── */
+.category-label {
+  font-family: var(--font-pixel);
+  font-size: 0.75rem;
+  color: var(--accent);
+  letter-spacing: 2px;
+  margin-bottom: 1.5rem;
+  padding-left: 1rem;
+  border-left: 2px solid var(--accent);
+}
+
+.project-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.25rem;
+  margin-bottom: 3rem;
+}
+
+.project-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 1.75rem;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+}
+
+.project-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--card-accent, var(--accent));
+  opacity: 0;
+  transition: opacity 0.35s;
+}
+
+.project-card:hover {
+  border-color: var(--border-accent);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+  background: var(--surface-hover);
+}
+
+.project-card:hover::before {
+  opacity: 1;
+}
+
+.card-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.card-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  background: var(--accent-dim);
+}
+
+.card-badge {
+  font-family: var(--font-mono);
+  font-size: 0.55rem;
+  padding: 3px 8px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 500;
+}
+
+.badge-live {
+  color: var(--green);
+  background: var(--green-dim);
+  border: 1px solid rgba(0, 255, 136, 0.15);
+}
+
+.badge-soon {
+  color: var(--amber);
+  background: rgba(255, 184, 0, 0.08);
+  border: 1px solid rgba(255, 184, 0, 0.15);
+}
+
+.badge-nft {
+  color: #c084fc;
+  background: rgba(192, 132, 252, 0.08);
+  border: 1px solid rgba(192, 132, 252, 0.15);
+}
+
+.card-name {
+  font-family: var(--font-body);
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 0.5rem;
+}
+
+.card-desc {
+  font-size: 0.85rem;
+  color: var(--text-mid);
+  line-height: 1.6;
+  flex: 1;
+  margin-bottom: 1rem;
+}
+
+.card-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.card-url {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  color: var(--text-dim);
+  transition: color 0.2s;
+}
+
+.project-card:hover .card-url {
+  color: var(--accent);
+}
+
+.card-arrow {
+  color: var(--text-dim);
+  transition: all 0.3s;
+  font-size: 0.9rem;
+}
+
+.project-card:hover .card-arrow {
+  color: var(--accent);
+  transform: translateX(4px);
+}
+
+/* ── ABOUT ── */
+.about-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: start;
+}
+
+.about-text {
+  font-size: 1.05rem;
+  line-height: 1.8;
+  color: var(--text-mid);
+}
+
+.about-text p {
+  margin-bottom: 1.5rem;
+}
+
+.about-text strong {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.about-text .highlight {
+  color: var(--accent);
+}
+
+.about-manifesto {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 2rem;
+  position: relative;
+}
+
+.about-manifesto::before {
+  content: '"';
+  position: absolute;
+  top: -0.3rem;
+  left: 1.5rem;
+  font-family: var(--font-pixel);
+  font-size: 4rem;
+  color: var(--accent);
+  opacity: 0.15;
+}
+
+.manifesto-line {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--text-mid);
+  line-height: 2;
+  padding-left: 1rem;
+  border-left: 2px solid var(--border);
+  margin-bottom: 1rem;
+  transition: border-color 0.3s;
+}
+
+.manifesto-line:hover {
+  border-color: var(--accent);
+  color: var(--text);
+}
+
+/* ── FOOTER ── */
+footer {
+  border-top: 1px solid var(--border);
+  padding: 3rem 0;
+}
+
+.footer-grid {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+}
+
+.footer-brand {
+  font-family: var(--font-pixel);
+  font-size: 0.75rem;
+  color: var(--text-dim);
+  letter-spacing: 2px;
+}
+
+.footer-links {
+  display: flex;
+  gap: 1.5rem;
+  list-style: none;
+}
+
+.footer-links a {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--text-dim);
+  text-decoration: none;
+  transition: color 0.2s;
+  letter-spacing: 0.5px;
+}
+
+.footer-links a:hover {
+  color: var(--accent);
+}
+
+.footer-copy {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  color: var(--text-dim);
+}
+
+/* ── SCROLL REVEAL ── */
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.reveal-delay-1 { transition-delay: 0.1s; }
+.reveal-delay-2 { transition-delay: 0.2s; }
+.reveal-delay-3 { transition-delay: 0.3s; }
+.reveal-delay-4 { transition-delay: 0.4s; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 768px) {
+  .hero-grid {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+    text-align: center;
+  }
+
+  .hero-left { order: 2; }
+  .hero-right { order: 1; }
+
+  .hero-tag { justify-content: center; }
+  .hero-sub { margin-left: auto; margin-right: auto; }
+  .stats-row { justify-content: center; }
+
+  .terminal-frame { max-width: 300px; }
+
+  .nav-links { display: none; }
+
+  .project-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .about-grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .footer-grid {
+    flex-direction: column;
+    text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .stats-row {
+    gap: 1.5rem;
+  }
+
+  .stat-num {
+    font-size: 1.2rem;
+  }
+}
+
+/* ── GRID BG ── */
+.grid-bg {
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
+  background-size: 60px 60px;
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* ── GLOW ORB ── */
+.glow-orb {
+  position: fixed;
+  width: 600px;
+  height: 600px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(0, 229, 255, 0.04) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: -1;
+  top: -100px;
+  right: -200px;
+  animation: orb-drift 20s ease-in-out infinite alternate;
+}
+
+@keyframes orb-drift {
+  0% { transform: translate(0, 0); }
+  100% { transform: translate(-100px, 150px); }
+}
+
+/* ── STANDALONE CARD ── */
+.standalone-card {
+  max-width: 500px;
+}
+
+</style>
+</head>
+<body>
+
+<div class="grid-bg"></div>
+<div class="glow-orb"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="wrap">
+    <a href="#" class="nav-logo">GRAVE<span>LABS</span></a>
+    <ul class="nav-links">
+      <li><a href="#projects">projects</a></li>
+      <li><a href="#about">about</a></li>
+      <li><a href="https://github.com/NoGraveDev" target="_blank">github</a></li>
+      <li><a href="https://x.com/GraveMetaX" target="_blank">@GraveMetaX</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="wrap">
+    <div class="hero-grid">
+
+      <div class="hero-left">
+        <div class="hero-tag reveal">systems online — gray, georgia</div>
+
+        <h1 class="hero-title reveal reveal-delay-1">
+          Grave<span class="accent">Labs</span>
+        </h1>
+
+        <p class="hero-sub reveal reveal-delay-2">
+          Digital products. Web3 infrastructure. AI systems.<br>
+          Built relentlessly. Shipped constantly.
+        </p>
+
+        <div class="stats-row reveal reveal-delay-3">
+          <div class="stat">
+            <span class="stat-num">11</span>
+            <span class="stat-label">Live Projects</span>
+          </div>
+          <div class="stat">
+            <span class="stat-num">4</span>
+            <span class="stat-label">Product Stores</span>
+          </div>
+          <div class="stat">
+            <span class="stat-num">3</span>
+            <span class="stat-label">Web3 Tools</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-right reveal reveal-delay-2">
+        <div class="terminal-frame">
+          <div class="terminal-bar">
+            <div class="terminal-dot r"></div>
+            <div class="terminal-dot y"></div>
+            <div class="terminal-dot g"></div>
+            <span class="terminal-title">operator.exe</span>
+          </div>
+          <div class="terminal-body">
+            <div class="pfp-wrapper">
+              <img src="wizard-dog.jpg" alt="GraveLabs operator" loading="eager">
+            </div>
+          </div>
+          <div class="terminal-info">
+            <div><span class="prompt">$</span> <span class="cmd">whoami</span></div>
+            <div><span class="output">→ one-person operation</span></div>
+            <div><span class="prompt">$</span> <span class="cmd">location</span></div>
+            <div><span class="output">→ gray, georgia</span></div>
+            <div><span class="prompt">$</span> <span class="cmd">status</span></div>
+            <div><span class="output">→ shipping ▮</span></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="wrap">
+
+    <div class="section-header reveal">
+      <div class="label">01 // Projects</div>
+      <h2>What's Live</h2>
+    </div>
+
+    <!-- Digital Products -->
+    <div class="category-label reveal">Digital Products</div>
+    <div class="project-grid">
+
+      <a href="https://clawkits.xyz" target="_blank" class="project-card reveal" style="--card-accent: #00e5ff;">
+        <div class="card-top">
+          <div class="card-icon">🤖</div>
+          <span class="card-badge badge-live">live</span>
+        </div>
+        <div class="card-name">ClawKits</div>
+        <div class="card-desc">Pre-built automation kits for AI agents. Plug-and-play workflows that actually work.</div>
+        <div class="card-meta">
+          <span class="card-url">clawkits.xyz</span>
+          <span class="card-arrow">→</span>
+        </div>
+      </a>
+
+      <a href="https://sheetvault.xyz" target="_blank" class="project-card reveal reveal-delay-1" style="--card-accent: #00ff88;">
+        <div class="card-top">
+          <div class="card-icon">📊</div>
+          <span class="card-badge badge-live">live</span>
+        </div>
+        <div class="card-name">SheetVault</div>
+        <div class="card-desc">Premium spreadsheet templates for builders, freelancers, and small businesses.</div>
+        <div class="card-meta">
+          <span class="card-url">sheetvault.xyz</span>
+          <span class="card-arrow">→</span>
+        </div>
+      </a>
+
+      <a href="https://bizkithq.xyz" target="_blank" class="project-card reveal reveal-delay-2" style="--card-accent: #ffb800;">
+        <div class="card-top">
+          <div class="card-icon">📦</div>
+          <span class="card-badge badge-live">live</span>
+        </div>
+        <div class="card-name">BizKitHQ</div>
+        <div class="card-desc">Business starter kits. Everything you need to launch, bundled and ready.</div>
+        <div class="card-meta">
+          <span class="card-url">bizkithq.xyz</span>
+          <span class="card-arrow">→</span>
+        </div>
+      </a>
+
+      <a href="https://promptplaybook.xyz" target="_blank" class="project-card reveal reveal-delay-3" style="--card-accent: #c084fc;">
+        <div class="card-top">
+          <div class="card-icon">📓</div>
+          <span class="card-badge badge-live">live</span>
+        </div>
+        <div class="card-name">PromptPlaybook</div>
+        <div class="card-desc">AI prompt playbooks. Curated prompts that get results, organized by use case.</div>
+        <div class="card-meta">
+          <span class="card-url">promptplaybook.xyz</span>
+          <span class="card-arrow">→</span>
+        </div>
+      </a>
+
+    </div>
+
+    <!-- Web3 / Crypto -->
+    <div class="category-label reveal">Web3 / Crypto</div>
+    <div class="project-grid">
+
+      <a href="https://hbuds.xyz" target="_blank" class="project-card reveal" style="--card-accent: #c084fc;">
+        <div class="card-top">
+          <div class="card-icon">🌿</div>
+          <span class="card-badge badge-nft">nft</span>
+        </div>
+        <div class="card-name">hBUDS</div>
+        <div class="card-desc">NFT collection on Hedera. 296/420 minted. New drops every Monday at 4:20 PM EST.</div>
+        <div class="card-meta">
+          <span class="card-url">hbuds.xyz</span>
+          <span class="card-arrow">→</span>
+        </div>
+      </a>
+
+      <a href="https://hookgraph.com" target="_blank" class="project-card reveal reveal-delay-1" style="--card-accent: #00e5ff;">
+        <div class="card-top">
+          <div class="card-icon">🔗</div>
+          <span class="card-badge badge-live">live</span>
+        </div>
+        <div class="card-name">HookGraph</div>
+        <div class="card-desc">HCS webhook service for Hedera developers. Subscribe to on-chain events in seconds.</div>
+        <div class="card-meta">
+          <span class="card-url">hookgraph.com</span>
+          <span class="card-arrow">→</span>
+        </div>
+      </a>
+
+      <a href="https://whatevermint.com" target="_blank" class="project-card reveal reveal-delay-2" style="--card-accent: #ff3d5a;">
+        <div class="card-top">
+          <div class="card-icon">🎲</div>
+          <span class="card-badge badge-live">live</span>
+        </div>
+        <div class="card-name">Whatever Mint</div>
+        <div class="card-desc">Mystery NFT marketplace on Hedera. Mint something. Find out what you get.</div>
+        <div class="card-meta">
+          <span class="card-url">whatevermint.com</span>
+          <span class="card-arrow">→</span>
+        </div>
+      </a>
+
+    </div>
+
+    <!-- SaaS / Apps -->
+    <div class="category-label reveal">SaaS / Apps</div>
+    <div class="project-grid">
+
+      <a href="https://modelrailroadinventory.com" target="_blank" class="project-card reveal" style="--card-accent: #ffb800;">
+        <div class="card-top">
+          <div class="card-icon">🚂</div>
+          <span class="card-badge badge-live">live</span>
+        </div>
+        <div class="card-name">Model Railroad Inventory</div>
+        <div class="card-desc">SaaS platform for model railroad collectors. Catalog, track, and manage your collection.</div>
+        <div class="card-meta">
+          <span class="card-url">modelrailroadinventory.com</span>
+          <span class="card-arrow">→</span>
+        </div>
+      </a>
+
+      <div class="project-card reveal reveal-delay-1" style="--card-accent: #00ff88; cursor: default;">
+        <div class="card-top">
+          <div class="card-icon">✍️</div>
+          <span class="card-badge badge-soon">soon</span>
+        </div>
+        <div class="card-name">AgentPen</div>
+        <div class="card-desc">AI agent for real estate agents. Listing writer + lead responder. Fully autonomous. $99/mo.</div>
+        <div class="card-meta">
+          <span class="card-url">coming soon</span>
+          <span class="card-arrow" style="opacity: 0.3;">→</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Real Estate -->
+    <div class="category-label reveal">Real Estate</div>
+    <div class="project-grid">
+
+      <a href="https://almosthomerealtyga.com" target="_blank" class="project-card standalone-card reveal" style="--card-accent: #00ff88;">
+        <div class="card-top">
+          <div class="card-icon">🏠</div>
+          <span class="card-badge badge-live">live</span>
+        </div>
+        <div class="card-name">Almost Home Realty GA</div>
+        <div class="card-desc">Real estate brokerage based in Gray, Georgia. Helping people find home.</div>
+        <div class="card-meta">
+          <span class="card-url">almosthomerealtyga.com</span>
+          <span class="card-arrow">→</span>
+        </div>
+      </a>
+
+    </div>
+
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="wrap">
+
+    <div class="section-header reveal">
+      <div class="label">02 // About</div>
+      <h2>The Operator</h2>
+    </div>
+
+    <div class="about-grid">
+
+      <div class="about-text reveal">
+        <p>
+          <strong>GraveLabs</strong> is a one-person operation out of <span class="highlight">Gray, Georgia</span>.
+          Everything here — every product, every line of code, every deployment — ships from a single desk.
+        </p>
+        <p>
+          No VC funding. No 50-person team. Just relentless building.
+          Digital products, Web3 infrastructure, AI systems, and whatever comes next.
+        </p>
+        <p>
+          The philosophy is simple: <strong>build things, ship them, move on to the next one.</strong>
+          Some will stick. Some won't. All of them teach something.
+        </p>
+      </div>
+
+      <div class="about-manifesto reveal reveal-delay-1">
+        <div class="manifesto-line">Build fast, ship faster</div>
+        <div class="manifesto-line">Revenue over funding rounds</div>
+        <div class="manifesto-line">One person can outship a team</div>
+        <div class="manifesto-line">If it's not live, it doesn't count</div>
+        <div class="manifesto-line">Web3 is infrastructure, not hype</div>
+        <div class="manifesto-line">AI is a tool, not a personality</div>
+        <div class="manifesto-line">Ship it or shut up</div>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap">
+    <div class="footer-grid">
+      <div class="footer-brand">GRAVELABS</div>
+      <ul class="footer-links">
+        <li><a href="https://github.com/NoGraveDev" target="_blank">GitHub</a></li>
+        <li><a href="https://x.com/GraveMetaX" target="_blank">X / Twitter</a></li>
+        <li><a href="mailto:NoGraveStudios@gmail.com">Email</a></li>
+      </ul>
+      <div class="footer-copy">© 2026 GraveLabs — Gray, GA</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+// ── Scroll Reveal (pure CSS class toggle, no GSAP needed) ──
+(function() {
+  const els = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, {
+    threshold: 0.08,
+    rootMargin: '0px 0px -40px 0px'
+  });
+
+  els.forEach(el => observer.observe(el));
+
+  // Fire immediately for above-fold elements
+  requestAnimationFrame(() => {
+    els.forEach(el => {
+      const rect = el.getBoundingClientRect();
+      if (rect.top < window.innerHeight * 0.85) {
+        el.classList.add('visible');
+        observer.unobserve(el);
+      }
+    });
+  });
+})();
+
+// ── Smooth nav hide on scroll ──
+(function() {
+  let lastScroll = 0;
+  const nav = document.querySelector('nav');
+  window.addEventListener('scroll', () => {
+    const curr = window.scrollY;
+    if (curr > lastScroll && curr > 200) {
+      nav.style.transform = 'translateY(-100%)';
+    } else {
+      nav.style.transform = 'translateY(0)';
+    }
+    lastScroll = curr;
+  }, { passive: true });
+})();
+
+// ── Typing cursor blink ──
+(function() {
+  const cursor = document.querySelector('.terminal-info .output:last-child');
+  if (cursor) {
+    setInterval(() => {
+      const text = cursor.textContent;
+      if (text.endsWith('▮')) {
+        cursor.textContent = text.slice(0, -1) + ' ';
+      } else {
+        cursor.textContent = text.replace(/ $/, '▮');
+      }
+    }, 600);
+  }
+})();
+</script>
+
+</body>
+</html>
