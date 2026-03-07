@@ -551,7 +551,7 @@ import * as THREE from 'three';
       blizzardMode = false;
       snowMat.size = 3;
       snowMat.opacity = 0.7;
-    }, 3000);
+    }, 4500);
   };
 
   // Auto-rotate + animate
@@ -655,76 +655,132 @@ import * as THREE from 'three';
 
     // Synthesize wolf howl with Web Audio API
     const ctx = new (window.AudioContext || window.webkitAudioContext)();
-    const dur = 2.5;
+    const dur = 4.0;
+    const t = ctx.currentTime;
 
-    // Main howl tone (oscillator sweeping up then down)
+    // Master reverb (convolver with impulse)
+    const convolver = ctx.createConvolver();
+    const irLen = ctx.sampleRate * 2;
+    const irBuf = ctx.createBuffer(2, irLen, ctx.sampleRate);
+    for(let ch=0;ch<2;ch++){const d=irBuf.getChannelData(ch);for(let i=0;i<irLen;i++){d[i]=(Math.random()*2-1)*Math.pow(1-i/irLen,2.5)*0.3;}}
+    convolver.buffer = irBuf;
+    const dryGain = ctx.createGain(); dryGain.gain.value = 0.7;
+    const wetGain = ctx.createGain(); wetGain.gain.value = 0.4;
+    const masterGain = ctx.createGain(); masterGain.gain.value = 0.6;
+    dryGain.connect(masterGain);
+    convolver.connect(wetGain);
+    wetGain.connect(masterGain);
+    masterGain.connect(ctx.destination);
+
+    // Vibrato LFO (wolves waver their pitch)
+    const lfo = ctx.createOscillator();
+    const lfoGain = ctx.createGain();
+    lfo.type = 'sine';
+    lfo.frequency.setValueAtTime(4, t);
+    lfo.frequency.linearRampToValueAtTime(5.5, t+1.5);
+    lfo.frequency.linearRampToValueAtTime(3, t+dur);
+    lfoGain.gain.setValueAtTime(8, t);
+    lfoGain.gain.linearRampToValueAtTime(15, t+1);
+    lfoGain.gain.linearRampToValueAtTime(10, t+dur);
+    lfo.connect(lfoGain);
+    lfo.start(t);
+    lfo.stop(t+dur);
+
+    // Main howl — low mournful tone, rises slowly then sustains then trails off
     const osc1 = ctx.createOscillator();
-    const gain1 = ctx.createGain();
+    const g1 = ctx.createGain();
     osc1.type = 'sine';
-    osc1.frequency.setValueAtTime(200, ctx.currentTime);
-    osc1.frequency.linearRampToValueAtTime(520, ctx.currentTime+0.6);
-    osc1.frequency.linearRampToValueAtTime(480, ctx.currentTime+1.2);
-    osc1.frequency.linearRampToValueAtTime(400, ctx.currentTime+2.0);
-    osc1.frequency.linearRampToValueAtTime(250, ctx.currentTime+dur);
-    gain1.gain.setValueAtTime(0, ctx.currentTime);
-    gain1.gain.linearRampToValueAtTime(0.3, ctx.currentTime+0.3);
-    gain1.gain.setValueAtTime(0.3, ctx.currentTime+1.5);
-    gain1.gain.linearRampToValueAtTime(0, ctx.currentTime+dur);
-    osc1.connect(gain1);
-    gain1.connect(ctx.destination);
-    osc1.start(ctx.currentTime);
-    osc1.stop(ctx.currentTime+dur);
+    osc1.frequency.setValueAtTime(180, t);
+    osc1.frequency.exponentialRampToValueAtTime(380, t+0.8);
+    osc1.frequency.exponentialRampToValueAtTime(440, t+1.3);
+    osc1.frequency.setValueAtTime(440, t+2.2);
+    osc1.frequency.exponentialRampToValueAtTime(350, t+3.2);
+    osc1.frequency.exponentialRampToValueAtTime(200, t+dur);
+    lfoGain.connect(osc1.frequency);
+    g1.gain.setValueAtTime(0, t);
+    g1.gain.linearRampToValueAtTime(0.35, t+0.5);
+    g1.gain.setValueAtTime(0.35, t+2.2);
+    g1.gain.linearRampToValueAtTime(0.2, t+3.2);
+    g1.gain.exponentialRampToValueAtTime(0.001, t+dur);
+    osc1.connect(g1);
+    g1.connect(dryGain);
+    g1.connect(convolver);
+    osc1.start(t); osc1.stop(t+dur);
 
-    // Harmonic overtone
+    // Second harmonic (octave up, quieter — gives fullness)
     const osc2 = ctx.createOscillator();
-    const gain2 = ctx.createGain();
+    const g2 = ctx.createGain();
     osc2.type = 'sine';
-    osc2.frequency.setValueAtTime(400, ctx.currentTime);
-    osc2.frequency.linearRampToValueAtTime(1040, ctx.currentTime+0.6);
-    osc2.frequency.linearRampToValueAtTime(960, ctx.currentTime+1.2);
-    osc2.frequency.linearRampToValueAtTime(800, ctx.currentTime+2.0);
-    osc2.frequency.linearRampToValueAtTime(500, ctx.currentTime+dur);
-    gain2.gain.setValueAtTime(0, ctx.currentTime);
-    gain2.gain.linearRampToValueAtTime(0.08, ctx.currentTime+0.4);
-    gain2.gain.setValueAtTime(0.08, ctx.currentTime+1.5);
-    gain2.gain.linearRampToValueAtTime(0, ctx.currentTime+dur);
-    osc2.connect(gain2);
-    gain2.connect(ctx.destination);
-    osc2.start(ctx.currentTime);
-    osc2.stop(ctx.currentTime+dur);
+    osc2.frequency.setValueAtTime(360, t);
+    osc2.frequency.exponentialRampToValueAtTime(760, t+0.8);
+    osc2.frequency.exponentialRampToValueAtTime(880, t+1.3);
+    osc2.frequency.setValueAtTime(880, t+2.2);
+    osc2.frequency.exponentialRampToValueAtTime(700, t+3.2);
+    osc2.frequency.exponentialRampToValueAtTime(400, t+dur);
+    lfoGain.connect(osc2.frequency);
+    g2.gain.setValueAtTime(0, t);
+    g2.gain.linearRampToValueAtTime(0.1, t+0.6);
+    g2.gain.setValueAtTime(0.1, t+2.2);
+    g2.gain.exponentialRampToValueAtTime(0.001, t+dur);
+    osc2.connect(g2);
+    g2.connect(dryGain);
+    g2.connect(convolver);
+    osc2.start(t); osc2.stop(t+dur);
 
-    // Breathy noise layer
+    // Third harmonic (fifth above — wolves hit these overtones)
+    const osc3 = ctx.createOscillator();
+    const g3 = ctx.createGain();
+    osc3.type = 'triangle';
+    osc3.frequency.setValueAtTime(270, t);
+    osc3.frequency.exponentialRampToValueAtTime(570, t+0.8);
+    osc3.frequency.exponentialRampToValueAtTime(660, t+1.3);
+    osc3.frequency.setValueAtTime(660, t+2.2);
+    osc3.frequency.exponentialRampToValueAtTime(525, t+3.2);
+    osc3.frequency.exponentialRampToValueAtTime(300, t+dur);
+    g3.gain.setValueAtTime(0, t);
+    g3.gain.linearRampToValueAtTime(0.06, t+0.8);
+    g3.gain.setValueAtTime(0.06, t+2.0);
+    g3.gain.exponentialRampToValueAtTime(0.001, t+dur);
+    osc3.connect(g3);
+    g3.connect(dryGain);
+    g3.connect(convolver);
+    osc3.start(t); osc3.stop(t+dur);
+
+    // Breath/wind noise filtered to follow the howl
     const bufLen = ctx.sampleRate * dur;
     const buf = ctx.createBuffer(1, bufLen, ctx.sampleRate);
     const data = buf.getChannelData(0);
-    for(let i=0;i<bufLen;i++) data[i] = (Math.random()*2-1)*0.15;
+    for(let i=0;i<bufLen;i++) data[i] = (Math.random()*2-1);
     const noiseSrc = ctx.createBufferSource();
     noiseSrc.buffer = buf;
-    const noiseGain = ctx.createGain();
-    const noiseFilter = ctx.createBiquadFilter();
-    noiseFilter.type = 'bandpass';
-    noiseFilter.frequency.value = 600;
-    noiseFilter.Q.value = 2;
-    noiseGain.gain.setValueAtTime(0, ctx.currentTime);
-    noiseGain.gain.linearRampToValueAtTime(0.12, ctx.currentTime+0.3);
-    noiseGain.gain.linearRampToValueAtTime(0, ctx.currentTime+dur);
-    noiseSrc.connect(noiseFilter);
-    noiseFilter.connect(noiseGain);
-    noiseGain.connect(ctx.destination);
-    noiseSrc.start(ctx.currentTime);
-    noiseSrc.stop(ctx.currentTime+dur);
+    const nf = ctx.createBiquadFilter();
+    nf.type = 'bandpass';
+    nf.frequency.setValueAtTime(300, t);
+    nf.frequency.exponentialRampToValueAtTime(800, t+0.8);
+    nf.frequency.setValueAtTime(800, t+2.2);
+    nf.frequency.exponentialRampToValueAtTime(400, t+dur);
+    nf.Q.value = 3;
+    const ng = ctx.createGain();
+    ng.gain.setValueAtTime(0, t);
+    ng.gain.linearRampToValueAtTime(0.08, t+0.4);
+    ng.gain.setValueAtTime(0.08, t+2.2);
+    ng.gain.exponentialRampToValueAtTime(0.001, t+dur);
+    noiseSrc.connect(nf);
+    nf.connect(ng);
+    ng.connect(dryGain);
+    ng.connect(convolver);
+    noiseSrc.start(t); noiseSrc.stop(t+dur);
 
-    // Blizzard: temporarily increase snow intensity via custom event
+    // Blizzard: temporarily increase snow intensity
     if(window.triggerBlizzard) window.triggerBlizzard();
 
     // Boost visualizer during howl
-    const origAnim = window.howlBoost;
     window.howlActive = true;
     setTimeout(function(){
       window.howlActive = false;
       pfpEl.classList.remove('howling');
       howling = false;
-    }, dur*1000+500);
+    }, 4500);
   });
 
   // Override viz animation to react to howl
