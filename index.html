@@ -193,15 +193,33 @@ a{color:inherit;text-decoration:none}
     <div class="feat-desc" style="max-width:600px">Audio engineer, front of house engineer, producer, musician, and digital artist. Years behind the console mixing live sound and in the studio crafting records — now building at the intersection of audio, code, and blockchain. Creator of ℏBUDS, member of Type Media, and part of the Order of 86.</div>
   </div>
 
-  <!-- Featured: ℏBUDS compact -->
+  <!-- Featured: ℏBUDS with dropdown -->
   <div class="others-label" style="margin-top:40px">Featured Project</div>
-  <a href="https://hbuds.xyz" target="_blank" style="display:flex;gap:16px;align-items:center;max-width:1100px;width:100%;padding:16px 20px;border-radius:12px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);transition:all 0.3s;text-decoration:none;color:inherit" onmouseover="this.style.borderColor='rgba(255,255,255,0.12)';this.style.background='rgba(255,255,255,0.05)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.06)';this.style.background='rgba(255,255,255,0.03)'">
-    <img src="hbuds-pfp.jpg" alt="ℏBUDS" style="width:48px;height:48px;border-radius:10px;flex-shrink:0">
-    <div style="min-width:0">
-      <div style="font-family:'Silkscreen',cursive;font-size:1.1rem;color:rgba(255,255,255,0.9)">ℏBUDS</div>
-      <div style="font-size:0.65rem;color:rgba(255,255,255,0.35);margin-top:2px">420 1/1 NFTs | 7 new every Monday @ 4:20pm EST on SentX | Only on Hedera</div>
+  <div class="feat-drop" id="featDrop" style="max-width:1100px;width:100%">
+    <div class="feat-drop-header" id="featToggle" style="display:flex;gap:16px;align-items:center;padding:16px 20px;border-radius:12px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);cursor:pointer;transition:all 0.3s">
+      <img src="hbuds-pfp.jpg" alt="ℏBUDS" style="width:48px;height:48px;border-radius:10px;flex-shrink:0">
+      <div style="min-width:0;flex:1">
+        <div style="font-family:'Silkscreen',cursive;font-size:1.1rem;color:rgba(255,255,255,0.9)">ℏBUDS</div>
+        <div style="font-size:0.65rem;color:rgba(255,255,255,0.35);margin-top:2px">420 1/1 NFTs | 7 new every Monday @ 4:20pm EST on SentX | Only on Hedera</div>
+      </div>
+      <span id="featArrow" style="font-family:'Silkscreen',cursive;font-size:0.8rem;color:rgba(255,255,255,0.2);transition:transform 0.3s;flex-shrink:0">▼</span>
     </div>
-  </a>
+    <div id="featPanel" style="max-height:0;overflow:hidden;transition:max-height 0.4s cubic-bezier(0.16,1,0.3,1)">
+      <div style="padding:20px;border:1px solid rgba(255,255,255,0.06);border-top:none;border-radius:0 0 12px 12px;background:rgba(255,255,255,0.02)">
+        <div style="font-size:0.7rem;color:rgba(255,255,255,0.5);line-height:1.7;margin-bottom:16px">ℏBUDS™ is a hand-drawn NFT collection of 420 unique 1/1 pieces on the Hedera network. Every Monday at 4:20 PM EST, 7 new ℏBUDS drop on SentX. Created with Sora and edited in Procreate on iPad.</div>
+        <div style="display:flex;gap:12px;margin-bottom:16px;flex-wrap:wrap">
+          <div style="text-align:center"><div style="font-family:'Silkscreen',cursive;font-size:1rem;color:rgba(255,255,255,0.9)">317/420</div><div style="font-size:0.45rem;color:rgba(255,255,255,0.25);text-transform:uppercase;letter-spacing:0.06em;margin-top:2px">Minted</div></div>
+          <div style="text-align:center"><div style="font-family:'Silkscreen',cursive;font-size:1rem;color:rgba(255,255,255,0.9)">2.3k</div><div style="font-size:0.45rem;color:rgba(255,255,255,0.25);text-transform:uppercase;letter-spacing:0.06em;margin-top:2px">Followers</div></div>
+          <div style="text-align:center"><div style="font-family:'Silkscreen',cursive;font-size:1rem;color:rgba(255,255,255,0.9)">Hedera</div><div style="font-size:0.45rem;color:rgba(255,255,255,0.25);text-transform:uppercase;letter-spacing:0.06em;margin-top:2px">Chain</div></div>
+        </div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <a href="https://hbuds.xyz" target="_blank" style="font-family:'Silkscreen',cursive;font-size:0.55rem;padding:6px 14px;border-radius:6px;border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.6);transition:all 0.3s" onmouseover="this.style.borderColor='rgba(255,255,255,0.3)';this.style.color='rgba(255,255,255,0.9)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.1)';this.style.color='rgba(255,255,255,0.6)'">Website →</a>
+          <a href="https://x.com/hBUDS_" target="_blank" style="font-family:'Silkscreen',cursive;font-size:0.55rem;padding:6px 14px;border-radius:6px;border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.6);transition:all 0.3s" onmouseover="this.style.borderColor='rgba(255,255,255,0.3)';this.style.color='rgba(255,255,255,0.9)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.1)';this.style.color='rgba(255,255,255,0.6)'">𝕏 @ℏBUDS_ →</a>
+          <a href="https://sentx.io/nft-marketplace/0.0.9280738" target="_blank" style="font-family:'Silkscreen',cursive;font-size:0.55rem;padding:6px 14px;border-radius:6px;border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.6);transition:all 0.3s" onmouseover="this.style.borderColor='rgba(255,255,255,0.3)';this.style.color='rgba(255,255,255,0.9)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.1)';this.style.color='rgba(255,255,255,0.6)'">SentX →</a>
+        </div>
+      </div>
+    </div>
+  </div>
 </section>
 
 <!-- ═══ SCREEN 3: OTHER PROJECTS — clean rows ═══ -->
@@ -294,6 +312,26 @@ a{color:inherit;text-decoration:none}
 <div class="foot-copy">© 2026 GraveLabs</div>
 
 <script>
+// Featured dropdown toggle
+document.getElementById('featToggle').addEventListener('click',function(){
+  const panel=document.getElementById('featPanel');
+  const arrow=document.getElementById('featArrow');
+  const header=this;
+  if(panel.style.maxHeight==='0px'||!panel.style.maxHeight||panel.style.maxHeight==='0'){
+    panel.style.maxHeight=panel.scrollHeight+'px';
+    arrow.style.transform='rotate(180deg)';
+    header.style.borderRadius='12px 12px 0 0';
+    header.style.borderColor='rgba(255,255,255,0.12)';
+    header.style.background='rgba(255,255,255,0.05)';
+  }else{
+    panel.style.maxHeight='0';
+    arrow.style.transform='rotate(0)';
+    header.style.borderRadius='12px';
+    header.style.borderColor='rgba(255,255,255,0.06)';
+    header.style.background='rgba(255,255,255,0.03)';
+  }
+});
+
 // Dogs data
 const DOGE_USD=0.091;
 const dogs=[
