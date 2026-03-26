@@ -308,6 +308,24 @@ a { color: inherit; text-decoration: none; }
   color: var(--text-dim);
   margin-top: 3px;
 }
+.pcard-x {
+  margin-left: auto;
+  color: var(--text-dim);
+  width: 30px; height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: rgba(255,255,255,0.02);
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+.pcard-x:hover {
+  color: var(--text);
+  border-color: rgba(255,255,255,0.15);
+  background: rgba(255,255,255,0.06);
+}
 .pcard-desc {
   font-size: 0.78rem;
   color: var(--text-mid);
@@ -620,10 +638,7 @@ footer {
     <div class="tagline reveal">NFTs · Audio · Web3</div>
     <div id="map3d" class="reveal" style="width:300px;height:300px;margin:28px auto;"></div>
     <div class="socials reveal">
-      <a href="https://x.com/hbuds_" target="_blank" title="@hbuds_"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
-      <a href="https://x.com/scribblexrb" target="_blank" title="@scribblexrb"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
-      <a href="https://x.com/wavewizardapp" target="_blank" title="@wavewizardapp"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
-      <a href="https://x.com/MRRInventory" target="_blank" title="@MRRInventory"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+      <a href="https://x.com/GraveMetaX" target="_blank" title="@GraveMetaX"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
       <a href="mailto:NoGraveStudios@gmail.com" title="Email"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg></a>
     </div>
     <div class="scroll-hint reveal">scroll</div>
@@ -646,6 +661,7 @@ footer {
             <div class="pcard-name">hBUDS</div>
             <div class="pcard-handle">@hbuds_</div>
           </div>
+          <span class="pcard-x" onclick="event.preventDefault();event.stopPropagation();window.open('https://x.com/hbuds_','_blank')"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></span>
         </div>
         <div class="pcard-desc">Hand-drawn NFT collection on Hedera. 7 new hBUDS drop every Monday at 4:20 PM EST. Created with Sora + Procreate.</div>
         <div class="pcard-stats">
@@ -663,6 +679,7 @@ footer {
             <div class="pcard-name">Scribble</div>
             <div class="pcard-handle">@scribblexrb</div>
           </div>
+          <span class="pcard-x" onclick="event.preventDefault();event.stopPropagation();window.open('https://x.com/scribblexrb','_blank')"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></span>
         </div>
         <div class="pcard-desc">Decentralized notepad app on Hedera. End-to-end encrypted notes with on-chain storage. Your notes, your privacy.</div>
         <div class="pcard-stats">
@@ -680,6 +697,7 @@ footer {
             <div class="pcard-name">Wave Wizard</div>
             <div class="pcard-handle">@wavewizardapp</div>
           </div>
+          <span class="pcard-x" onclick="event.preventDefault();event.stopPropagation();window.open('https://x.com/wavewizardapp','_blank')"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></span>
         </div>
         <div class="pcard-desc">The ultimate audio engineering tool. Log I/O, AI assistant, RTA, and more — all in one mobile app. Beta available now.</div>
         <div class="pcard-stats">
@@ -697,6 +715,7 @@ footer {
             <div class="pcard-name">MRR Inventory</div>
             <div class="pcard-handle">@MRRInventory</div>
           </div>
+          <span class="pcard-x" onclick="event.preventDefault();event.stopPropagation();window.open('https://x.com/MRRInventory','_blank')"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></span>
         </div>
         <div class="pcard-desc">Model railroad inventory management system. Track your collection, organize by scale, gauge, and manufacturer.</div>
         <div class="pcard-stats">
