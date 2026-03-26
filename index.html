@@ -4,37 +4,84 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>GraveLabs</title>
-<meta name="description" content="GraveLabs — Audio engineer, musician, Web3 builder, AI systems.">
+<meta name="description" content="GraveLabs — hBUDS NFTs on Hedera · Scribble · Wave Wizard · Doginal Dogs">
 <meta property="og:title" content="GraveLabs">
-<meta property="og:description" content="Audio engineer, musician, Web3 builder, AI systems.">
+<meta property="og:description" content="hBUDS NFTs on Hedera · Scribble · Wave Wizard · Doginal Dogs">
 <meta property="og:type" content="website">
 <meta property="og:image" content="wizard-dog.jpg">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:site" content="@GraveMetaX">
+<meta name="twitter:site" content="@hbuds_">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&family=Space+Grotesk:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
 :root {
-  --bg: #0a0a0e;
-  --surface: #111116;
+  --bg: #050508;
+  --surface: rgba(255,255,255,0.03);
+  --surface-hover: rgba(255,255,255,0.06);
+  --glass: rgba(12,12,18,0.65);
+  --glass-border: rgba(255,255,255,0.08);
   --accent: #00e5ff;
-  --text: #e8e8ee;
-  --text-mid: #888898;
-  --text-dim: #444455;
+  --accent-glow: rgba(0,229,255,0.15);
+  --green: #00ff88;
+  --green-glow: rgba(0,255,136,0.12);
+  --purple: #c084fc;
+  --purple-glow: rgba(192,132,252,0.12);
+  --amber: #f5a623;
+  --amber-glow: rgba(245,166,35,0.12);
+  --rose: #ff6b9d;
+  --rose-glow: rgba(255,107,157,0.12);
+  --text: #f0f0f5;
+  --text-mid: #8888a0;
+  --text-dim: #3a3a50;
   --border: rgba(255,255,255,0.06);
   --pixel: 'Silkscreen', cursive;
   --body: 'Space Grotesk', sans-serif;
+  --mono: 'Inter', sans-serif;
 }
 
 html { background: var(--bg); color: var(--text); font-family: var(--body); scroll-behavior: smooth; }
 body { overflow-x: hidden; -webkit-font-smoothing: antialiased; }
 a { color: inherit; text-decoration: none; }
+::selection { background: var(--accent); color: #000; }
 
-.wrap { max-width: 720px; margin: 0 auto; padding: 0 24px; }
+/* ── ANIMATED GRADIENT MESH BG ── */
+.gradient-bg {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+}
+.gradient-bg .orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(120px);
+  opacity: 0.08;
+  animation: orb-drift 20s ease-in-out infinite alternate;
+}
+.gradient-bg .orb:nth-child(1) { width: 600px; height: 600px; background: var(--accent); top: -10%; left: -5%; animation-duration: 25s; }
+.gradient-bg .orb:nth-child(2) { width: 500px; height: 500px; background: var(--purple); top: 40%; right: -10%; animation-duration: 18s; animation-delay: -5s; }
+.gradient-bg .orb:nth-child(3) { width: 400px; height: 400px; background: var(--green); bottom: -5%; left: 30%; animation-duration: 22s; animation-delay: -10s; }
+.gradient-bg .orb:nth-child(4) { width: 350px; height: 350px; background: var(--amber); top: 20%; left: 50%; animation-duration: 30s; animation-delay: -15s; }
+@keyframes orb-drift {
+  0% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(40px, -30px) scale(1.1); }
+  66% { transform: translate(-20px, 50px) scale(0.95); }
+  100% { transform: translate(30px, 20px) scale(1.05); }
+}
+
+/* ── NOISE OVERLAY ── */
+.noise {
+  position: fixed; inset: 0; z-index: -1;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.wrap { max-width: 800px; margin: 0 auto; padding: 0 24px; }
 
 /* ── HERO ── */
 .hero {
@@ -44,175 +91,62 @@ a { color: inherit; text-decoration: none; }
   justify-content: center;
   text-align: center;
   padding: 60px 0;
+  position: relative;
 }
 
 .pfp {
-  width: 120px;
-  height: 120px;
-  border-radius: 16px;
-  border: 2px solid var(--border);
-  margin: 0 auto 32px;
+  width: 130px; height: 130px;
+  border-radius: 20px;
+  margin: 0 auto 36px;
   overflow: hidden;
   image-rendering: pixelated;
+  position: relative;
+  cursor: pointer;
 }
-
-.pfp img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.pfp::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: 22px;
+  background: conic-gradient(from 0deg, var(--accent), var(--purple), var(--green), var(--amber), var(--accent));
+  z-index: -1;
+  animation: spin-border 8s linear infinite;
+}
+@keyframes spin-border {
+  to { transform: rotate(360deg); }
+}
+.pfp img { width: 100%; height: 100%; object-fit: cover; display: block; border-radius: 18px; }
+.pfp.howling { animation: howl-shake 0.15s ease infinite alternate; }
+@keyframes howl-shake { 0%{transform:rotate(-2deg) scale(1.05)} 100%{transform:rotate(2deg) scale(1.05)} }
 
 .brand {
   font-family: var(--pixel);
-  font-size: clamp(2rem, 5vw, 3rem);
-  letter-spacing: 2px;
-  margin-bottom: 12px;
+  font-size: clamp(2.2rem, 6vw, 3.5rem);
+  letter-spacing: 3px;
+  margin-bottom: 8px;
+  position: relative;
 }
-
-.brand span { color: var(--accent); }
+.brand span {
+  background: linear-gradient(135deg, var(--accent), var(--purple));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
 
 .tagline {
+  font-family: var(--mono);
   color: var(--text-mid);
-  font-size: 0.95rem;
-  font-weight: 300;
-  margin-bottom: 24px;
-}
-
-.socials {
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-  margin-bottom: 48px;
-}
-
-.socials a {
-  color: var(--text-dim);
-  font-size: 1.4rem;
-  font-weight: 400;
-  transition: color 0.2s;
-}
-
-.socials a:hover { color: var(--accent); }
-
-.scroll-hint {
-  color: var(--text-dim);
-  font-size: 0.7rem;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  animation: fade-pulse 3s ease infinite;
-}
-
-@keyframes fade-pulse {
-  0%, 100% { opacity: 0.3; }
-  50% { opacity: 0.8; }
-}
-
-/* ── PROJECTS ── */
-.projects {
-  padding: 80px 0 120px;
-}
-
-.section-label {
-  font-family: var(--pixel);
-  font-size: 0.75rem;
-  color: var(--accent);
-  letter-spacing: 2px;
-  margin-bottom: 32px;
-}
-
-.list { display: flex; flex-direction: column; }
-
-.item {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 20px 0;
-  border-bottom: 1px solid var(--border);
-  transition: all 0.2s;
-  gap: 16px;
-}
-
-.item:first-child { border-top: 1px solid var(--border); }
-
-.item:hover { padding-left: 8px; }
-.item:hover .item-name { color: var(--accent); }
-.item:hover .item-arrow { color: var(--accent); transform: translateX(4px); }
-
-.item-left {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  min-width: 0;
-}
-
-.item-icon {
-  font-size: 1.1rem;
-  width: 32px;
-  flex-shrink: 0;
-  text-align: center;
-}
-
-.item-name {
-  font-weight: 500;
-  font-size: 1rem;
-  transition: color 0.2s;
-  white-space: nowrap;
-}
-
-.item-tag {
-  font-size: 0.6rem;
-  padding: 2px 8px;
-  border-radius: 3px;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  font-weight: 500;
-  flex-shrink: 0;
-}
-
-.tag-live { color: #00ff88; background: rgba(0,255,136,0.08); }
-.tag-nft { color: #c084fc; background: rgba(192,132,252,0.08); }
-.tag-soon { color: #ffb800; background: rgba(255,184,0,0.08); }
-
-.item-right {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  flex-shrink: 0;
-}
-
-.item-url {
-  color: var(--text-dim);
-  font-size: 0.75rem;
-  font-weight: 300;
-}
-
-.item-arrow {
-  color: var(--text-dim);
   font-size: 0.85rem;
-  transition: all 0.2s;
-}
-
-/* ── FOOTER ── */
-footer {
-  border-top: 1px solid var(--border);
-  padding: 32px 0;
-  display: flex;
-  justify-content: center;
-}
-
-.footer-text {
-  font-size: 0.7rem;
-  color: var(--text-dim);
-  letter-spacing: 1px;
-}
-
-/* ── MOBILE ── */
-@media (max-width: 600px) {
-  .item-url { display: none; }
-  .item { padding: 16px 0; }
+  font-weight: 300;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  margin-bottom: 28px;
 }
 
 /* ── VISUALIZER ── */
 .visualizer-wrap {
-  width: 200px;
-  height: 40px;
-  margin: 0 auto 16px;
+  width: 220px; height: 44px;
+  margin: 0 auto 24px;
   display: flex;
   align-items: flex-end;
   justify-content: center;
@@ -220,193 +154,675 @@ footer {
 }
 .viz-bar {
   width: 3px;
-  background: var(--accent);
+  background: linear-gradient(to top, var(--accent), var(--purple));
   border-radius: 2px;
-  opacity: 0.6;
-  transition: height 0.1s ease;
-}
-.pfp.howling {
-  animation: howl-shake 0.15s ease infinite alternate;
-}
-@keyframes howl-shake {
-  0% { transform: rotate(-2deg) scale(1.05); }
-  100% { transform: rotate(2deg) scale(1.05); }
+  opacity: 0.5;
+  transition: height 0.08s ease;
 }
 
-/* ── REVEAL ── */
+.socials {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 48px;
+}
+.socials a {
+  color: var(--text-dim);
+  width: 40px; height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  backdrop-filter: blur(10px);
+  transition: all 0.3s;
+}
+.socials a:hover {
+  color: var(--accent);
+  border-color: rgba(0,229,255,0.3);
+  background: var(--accent-glow);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 20px rgba(0,229,255,0.15);
+}
+
+.scroll-hint {
+  color: var(--text-dim);
+  font-size: 0.65rem;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  animation: bounce-down 2s ease infinite;
+}
+@keyframes bounce-down {
+  0%,100%{ transform: translateY(0); opacity: 0.4; }
+  50%{ transform: translateY(6px); opacity: 0.8; }
+}
+
+/* ── SECTION HEADERS ── */
+.section-header {
+  margin-bottom: 40px;
+}
+.section-label {
+  font-family: var(--pixel);
+  font-size: 0.7rem;
+  color: var(--accent);
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.section-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, var(--accent), transparent);
+  opacity: 0.3;
+}
+.section-sub {
+  font-size: 0.8rem;
+  color: var(--text-dim);
+  font-weight: 300;
+}
+
+/* ── PROJECTS ── */
+.projects { padding: 60px 0; }
+
+.project-cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.pcard {
+  position: relative;
+  background: var(--glass);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+  padding: 24px;
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  display: block;
+  overflow: hidden;
+}
+.pcard::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 16px;
+  padding: 1px;
+  background: var(--card-gradient);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.35s;
+}
+.pcard:hover::before { opacity: 1; }
+.pcard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 50px var(--card-shadow);
+  border-color: transparent;
+}
+.pcard.hbuds { --card-gradient: linear-gradient(135deg, var(--green), var(--accent)); --card-shadow: rgba(0,255,136,0.08); --card-accent: var(--green); }
+.pcard.scribble { --card-gradient: linear-gradient(135deg, var(--purple), #ff69b4); --card-shadow: rgba(192,132,252,0.08); --card-accent: var(--purple); }
+.pcard.wavewizard { --card-gradient: linear-gradient(135deg, var(--amber), #ff6b35); --card-shadow: rgba(245,166,35,0.08); --card-accent: var(--amber); }
+.pcard.mrr { --card-gradient: linear-gradient(135deg, var(--rose), #ff3366); --card-shadow: rgba(255,107,157,0.08); --card-accent: var(--rose); }
+
+/* Glow dot top-right */
+.pcard::after {
+  content: '';
+  position: absolute;
+  top: 16px; right: 16px;
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--card-accent);
+  box-shadow: 0 0 8px var(--card-accent);
+  opacity: 0.6;
+}
+
+.pcard-top {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 16px;
+}
+.pcard-pfp {
+  width: 52px; height: 52px;
+  border-radius: 14px;
+  overflow: hidden;
+  flex-shrink: 0;
+  border: 2px solid rgba(255,255,255,0.08);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+.pcard-pfp img { width: 100%; height: 100%; object-fit: cover; }
+.pcard-name {
+  font-family: var(--pixel);
+  font-size: 0.9rem;
+  letter-spacing: 0.5px;
+}
+.pcard-handle {
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  color: var(--text-dim);
+  margin-top: 3px;
+}
+.pcard-desc {
+  font-size: 0.78rem;
+  color: var(--text-mid);
+  line-height: 1.6;
+  margin-bottom: 16px;
+  font-weight: 300;
+}
+.pcard-stats {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+}
+.pcard-stat {
+  font-size: 0.6rem;
+  color: var(--text-dim);
+  padding: 4px 10px;
+  border-radius: 100px;
+  border: 1px solid var(--border);
+  background: rgba(255,255,255,0.02);
+}
+.pcard-stat strong {
+  color: var(--card-accent, var(--text));
+  font-weight: 600;
+}
+.pcard-link {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  color: var(--card-accent);
+  letter-spacing: 0.5px;
+  transition: letter-spacing 0.2s;
+}
+.pcard:hover .pcard-link { letter-spacing: 2px; }
+
+/* ── DOGINAL DOGS ── */
+.dogs-section { padding: 40px 0 120px; }
+
+.dogs-summary {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-bottom: 32px;
+}
+.ds-card {
+  background: var(--glass);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border);
+  border-radius: 12px;
+  padding: 16px;
+  text-align: center;
+  transition: all 0.3s;
+}
+.ds-card:hover {
+  border-color: rgba(245,166,35,0.2);
+  background: rgba(245,166,35,0.04);
+}
+.ds-val {
+  font-family: var(--pixel);
+  font-size: 1rem;
+  color: var(--amber);
+  margin-bottom: 4px;
+}
+.ds-lbl {
+  font-family: var(--mono);
+  color: var(--text-dim);
+  font-size: 0.55rem;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+}
+
+/* Image-only grid */
+.dogs-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 12px;
+}
+
+.dcard {
+  position: relative;
+  border-radius: 14px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 2px solid transparent;
+}
+.dcard:hover {
+  transform: translateY(-4px) scale(1.03);
+  box-shadow: 0 16px 40px rgba(0,0,0,0.5);
+  border-color: rgba(255,255,255,0.12);
+}
+.dcard.epic:hover { border-color: rgba(192,132,252,0.4); box-shadow: 0 16px 40px rgba(192,132,252,0.15); }
+
+.dcard img {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  image-rendering: pixelated;
+  display: block;
+  transition: transform 0.4s;
+}
+.dcard:hover img { transform: scale(1.08); }
+
+.dcard-overlay {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  padding: 8px 10px;
+  background: linear-gradient(transparent, rgba(0,0,0,0.85));
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+.dcard-overlay .dog-id {
+  font-family: var(--pixel);
+  font-size: 0.7rem;
+}
+.dcard-overlay .dog-badge {
+  font-family: var(--pixel);
+  font-size: 0.4rem;
+  padding: 3px 6px;
+  border-radius: 4px;
+  letter-spacing: 0.5px;
+}
+.dog-badge.epic { background: rgba(192,132,252,0.3); color: var(--purple); }
+.dog-badge.rare { background: rgba(245,166,35,0.25); color: var(--amber); }
+
+/* ── DOG MODAL ── */
+.dog-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.8);
+  backdrop-filter: blur(12px);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s;
+}
+.dog-modal-backdrop.open {
+  opacity: 1;
+  pointer-events: all;
+}
+.dog-modal {
+  background: var(--glass);
+  backdrop-filter: blur(30px);
+  border: 1px solid var(--glass-border);
+  border-radius: 20px;
+  max-width: 420px;
+  width: 100%;
+  overflow: hidden;
+  transform: scale(0.9) translateY(20px);
+  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.dog-modal-backdrop.open .dog-modal {
+  transform: scale(1) translateY(0);
+}
+.dog-modal-img {
+  position: relative;
+  background: #060608;
+}
+.dog-modal-img img {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  image-rendering: pixelated;
+  display: block;
+}
+.dog-modal-close {
+  position: absolute;
+  top: 12px; right: 12px;
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255,255,255,0.1);
+  color: var(--text);
+  font-size: 1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+.dog-modal-close:hover { background: rgba(255,255,255,0.15); }
+
+.dog-modal-body { padding: 20px 24px 24px; }
+.dog-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+.dog-modal-id { font-family: var(--pixel); font-size: 1.2rem; }
+.dog-modal-rank { font-family: var(--mono); font-size: 0.65rem; color: var(--text-dim); }
+
+.dog-modal-traits {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-bottom: 16px;
+}
+.dm-trait {
+  font-family: var(--mono);
+  font-size: 0.6rem;
+  padding: 4px 10px;
+  border-radius: 100px;
+  border: 1px solid var(--border);
+  color: var(--text-mid);
+  background: rgba(255,255,255,0.02);
+}
+.dm-trait.key {
+  border-color: rgba(245,166,35,0.3);
+  color: var(--amber);
+  background: rgba(245,166,35,0.06);
+  box-shadow: 0 0 8px rgba(245,166,35,0.08);
+}
+
+.dog-modal-floor {
+  padding-top: 14px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+.dog-modal-floor .fl { font-family: var(--mono); font-size: 0.55rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px; }
+.dog-modal-floor .fd { font-family: var(--pixel); font-size: 1.1rem; color: var(--amber); }
+.dog-modal-floor .fu { font-family: var(--mono); font-size: 0.6rem; color: var(--text-dim); }
+.dog-modal-floor .fd.priceless {
+  background: linear-gradient(135deg, var(--green), var(--accent), var(--purple));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.dog-modal-note {
+  font-family: var(--mono);
+  font-size: 0.55rem;
+  color: var(--text-dim);
+  margin-top: 8px;
+}
+
+/* ── REVEAL ANIMATIONS ── */
 .reveal {
   opacity: 0;
-  transform: translateY(16px);
-  transition: opacity 0.6s ease, transform 0.6s ease;
+  transform: translateY(20px);
+  transition: opacity 0.7s cubic-bezier(0.4, 0, 0.2, 1), transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .reveal.visible {
   opacity: 1;
   transform: translateY(0);
 }
+/* stagger children */
+.project-cards .reveal:nth-child(2) { transition-delay: 0.1s; }
+.project-cards .reveal:nth-child(3) { transition-delay: 0.2s; }
+.project-cards .reveal:nth-child(4) { transition-delay: 0.3s; }
+
+/* ── DIVIDER ── */
+.divider {
+  width: 60px;
+  height: 2px;
+  background: linear-gradient(90deg, var(--accent), var(--purple));
+  margin: 0 auto 60px;
+  border-radius: 2px;
+  opacity: 0.4;
+}
+
+/* ── FOOTER ── */
+footer {
+  border-top: 1px solid var(--border);
+  padding: 40px 0;
+  text-align: center;
+}
+.footer-text {
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  color: var(--text-dim);
+  letter-spacing: 2px;
+}
+
+/* ── MOBILE ── */
+@media (max-width: 700px) {
+  .project-cards { grid-template-columns: 1fr; gap: 12px; }
+  .dogs-grid { grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  .dogs-summary { grid-template-columns: repeat(2, 1fr); }
+  .dog-modal { max-width: 90vw; }
+  .pcard { padding: 20px; }
+  .gradient-bg .orb { opacity: 0.05; }
+}
+@media (max-width: 380px) {
+  .dogs-grid { grid-template-columns: 1fr; }
+}
 </style>
 </head>
 <body>
 
+<div class="gradient-bg">
+  <div class="orb"></div><div class="orb"></div><div class="orb"></div><div class="orb"></div>
+</div>
+<div class="noise"></div>
+
+<!-- ═══ HERO ═══ -->
 <section class="hero">
   <div class="wrap">
-    <div class="pfp reveal" id="pfpClick" style="cursor:pointer;" title="Click me 🐺">
+    <div class="pfp reveal" id="pfpClick" title="Click me 🐺">
       <img src="wizard-dog.jpg" alt="GraveLabs">
     </div>
     <div class="brand reveal">Grave<span>Labs</span></div>
     <div class="visualizer-wrap reveal" id="visualizer"></div>
-    <div class="tagline reveal">Audio • Design • Web3</div>
-    <div id="map3d" class="reveal" style="width:280px;height:280px;margin:24px auto;"></div>
+    <div class="tagline reveal">NFTs · Audio · Web3</div>
+    <div id="map3d" class="reveal" style="width:300px;height:300px;margin:28px auto;"></div>
     <div class="socials reveal">
-      <a href="https://x.com/GraveMetaX" target="_blank" title="X / Twitter"><svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
-      <a href="mailto:NoGraveStudios@gmail.com" title="Email"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg></a>
+      <a href="https://x.com/hbuds_" target="_blank" title="@hbuds_"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+      <a href="https://x.com/scribblexrb" target="_blank" title="@scribblexrb"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+      <a href="https://x.com/wavewizardapp" target="_blank" title="@wavewizardapp"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+      <a href="https://x.com/MRRInventory" target="_blank" title="@MRRInventory"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+      <a href="mailto:NoGraveStudios@gmail.com" title="Email"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg></a>
     </div>
-    <div class="scroll-hint">↓</div>
+    <div class="scroll-hint reveal">scroll</div>
   </div>
 </section>
 
+<!-- ═══ PROJECTS ═══ -->
 <section class="projects">
   <div class="wrap">
-    <div class="section-label reveal">Hedera / Web3</div>
-    <div class="list">
-
-      <a href="https://hbuds.xyz" target="_blank" class="item reveal">
-        <div class="item-left">
-          <span class="item-icon">🌿</span>
-          <span class="item-name">hBUDS</span>
-          <span class="item-tag tag-nft">nft</span>
-        </div>
-        <div class="item-right">
-          <span class="item-url">hbuds.xyz</span>
-          <span class="item-arrow">→</span>
-        </div>
-      </a>
-
-      <a href="https://hookgraph.com" target="_blank" class="item reveal">
-        <div class="item-left">
-          <span class="item-icon">🔗</span>
-          <span class="item-name">HookGraph</span>
-          <span class="item-tag tag-live">live</span>
-        </div>
-        <div class="item-right">
-          <span class="item-url">hookgraph.com</span>
-          <span class="item-arrow">→</span>
-        </div>
-      </a>
-
-      <a href="https://whatevermint.com" target="_blank" class="item reveal">
-        <div class="item-left">
-          <span class="item-icon">🎲</span>
-          <span class="item-name">Whatever Mint</span>
-          <span class="item-tag tag-live">live</span>
-        </div>
-        <div class="item-right">
-          <span class="item-url">whatevermint.com</span>
-          <span class="item-arrow">→</span>
-        </div>
-      </a>
-
+    <div class="section-header reveal">
+      <div class="section-label">Projects</div>
+      <div class="section-sub">Things we're building</div>
     </div>
+    <div class="project-cards">
 
-    <div class="section-label reveal" style="margin-top: 48px;">AI Stores</div>
-    <div class="list">
-
-      <a href="https://clawkits.xyz" target="_blank" class="item reveal">
-        <div class="item-left">
-          <span class="item-icon">🤖</span>
-          <span class="item-name">ClawKits</span>
-          <span class="item-tag tag-live">live</span>
+      <a href="https://hbuds.xyz" target="_blank" class="pcard hbuds reveal">
+        <div class="pcard-top">
+          <div class="pcard-pfp"><img src="hbuds-pfp.jpg" alt="hBUDS"></div>
+          <div>
+            <div class="pcard-name">hBUDS</div>
+            <div class="pcard-handle">@hbuds_</div>
+          </div>
         </div>
-        <div class="item-right">
-          <span class="item-url">clawkits.xyz</span>
-          <span class="item-arrow">→</span>
+        <div class="pcard-desc">Hand-drawn NFT collection on Hedera. 7 new hBUDS drop every Monday at 4:20 PM EST. Created with Sora + Procreate.</div>
+        <div class="pcard-stats">
+          <div class="pcard-stat"><strong>296</strong>/420 minted</div>
+          <div class="pcard-stat"><strong>2.1k</strong> followers</div>
+          <div class="pcard-stat"><strong>Hedera</strong></div>
         </div>
+        <div class="pcard-link">hbuds.xyz →</div>
       </a>
 
-      <a href="https://sheetvault.xyz" target="_blank" class="item reveal">
-        <div class="item-left">
-          <span class="item-icon">📊</span>
-          <span class="item-name">SheetVault</span>
-          <span class="item-tag tag-live">live</span>
+      <a href="https://xrb.app" target="_blank" class="pcard scribble reveal">
+        <div class="pcard-top">
+          <div class="pcard-pfp"><img src="scribble-pfp.jpg" alt="Scribble"></div>
+          <div>
+            <div class="pcard-name">Scribble</div>
+            <div class="pcard-handle">@scribblexrb</div>
+          </div>
         </div>
-        <div class="item-right">
-          <span class="item-url">sheetvault.xyz</span>
-          <span class="item-arrow">→</span>
+        <div class="pcard-desc">Decentralized notepad app on Hedera. End-to-end encrypted notes with on-chain storage. Your notes, your privacy.</div>
+        <div class="pcard-stats">
+          <div class="pcard-stat"><strong>iOS</strong> App Store</div>
+          <div class="pcard-stat"><strong>Hedera</strong></div>
+          <div class="pcard-stat"><strong>Encrypted</strong></div>
         </div>
+        <div class="pcard-link">xrb.app →</div>
       </a>
 
-      <a href="https://bizkithq.xyz" target="_blank" class="item reveal">
-        <div class="item-left">
-          <span class="item-icon">📦</span>
-          <span class="item-name">BizKitHQ</span>
-          <span class="item-tag tag-live">live</span>
+      <a href="https://wavewizard.app" target="_blank" class="pcard wavewizard reveal">
+        <div class="pcard-top">
+          <div class="pcard-pfp"><img src="wavewizard-pfp.jpg" alt="Wave Wizard"></div>
+          <div>
+            <div class="pcard-name">Wave Wizard</div>
+            <div class="pcard-handle">@wavewizardapp</div>
+          </div>
         </div>
-        <div class="item-right">
-          <span class="item-url">bizkithq.xyz</span>
-          <span class="item-arrow">→</span>
+        <div class="pcard-desc">The ultimate audio engineering tool. Log I/O, AI assistant, RTA, and more — all in one mobile app. Beta available now.</div>
+        <div class="pcard-stats">
+          <div class="pcard-stat"><strong>Mobile</strong> App</div>
+          <div class="pcard-stat"><strong>RTA</strong></div>
+          <div class="pcard-stat"><strong>AI</strong> Assistant</div>
         </div>
+        <div class="pcard-link">wavewizard.app →</div>
       </a>
 
-      <a href="https://promptplaybook.xyz" target="_blank" class="item reveal">
-        <div class="item-left">
-          <span class="item-icon">📓</span>
-          <span class="item-name">PromptPlaybook</span>
-          <span class="item-tag tag-live">live</span>
+      <a href="https://modelrailroadinventory.com" target="_blank" class="pcard mrr reveal">
+        <div class="pcard-top">
+          <div class="pcard-pfp"><img src="mrr-pfp.jpg" alt="MRR Inventory"></div>
+          <div>
+            <div class="pcard-name">MRR Inventory</div>
+            <div class="pcard-handle">@MRRInventory</div>
+          </div>
         </div>
-        <div class="item-right">
-          <span class="item-url">promptplaybook.xyz</span>
-          <span class="item-arrow">→</span>
+        <div class="pcard-desc">Model railroad inventory management system. Track your collection, organize by scale, gauge, and manufacturer.</div>
+        <div class="pcard-stats">
+          <div class="pcard-stat"><strong>Web</strong> App</div>
+          <div class="pcard-stat"><strong>Supabase</strong></div>
+          <div class="pcard-stat"><strong>Stripe</strong></div>
         </div>
-      </a>
-
-      <div class="item reveal" style="cursor: default;">
-        <div class="item-left">
-          <span class="item-icon">✍️</span>
-          <span class="item-name">AgentPen</span>
-          <span class="item-tag tag-soon">soon</span>
-        </div>
-        <div class="item-right">
-          <span class="item-url">coming soon</span>
-          <span class="item-arrow" style="opacity:0.3;">→</span>
-        </div>
-      </div>
-
-    </div>
-
-    <div class="section-label reveal" style="margin-top: 48px;">Other</div>
-    <div class="list">
-
-      <a href="https://xrb.app" target="_blank" class="item reveal">
-        <div class="item-left">
-          <span class="item-icon">🎨</span>
-          <span class="item-name">Scribble</span>
-          <span class="item-tag tag-live">live</span>
-        </div>
-        <div class="item-right">
-          <span class="item-url">xrb.app</span>
-          <span class="item-arrow">→</span>
-        </div>
-      </a>
-
-      <a href="https://modelrailroadinventory.com" target="_blank" class="item reveal">
-        <div class="item-left">
-          <span class="item-icon">🚂</span>
-          <span class="item-name">Model Railroad Inventory</span>
-          <span class="item-tag tag-live">live</span>
-        </div>
-        <div class="item-right">
-          <span class="item-url">modelrailroadinventory.com</span>
-          <span class="item-arrow">→</span>
-        </div>
+        <div class="pcard-link">modelrailroadinventory.com →</div>
       </a>
 
     </div>
   </div>
 </section>
 
+<div class="divider reveal"></div>
+
+<!-- ═══ DOGINAL DOGS ═══ -->
+<section class="dogs-section">
+  <div class="wrap">
+    <div class="section-header reveal">
+      <div class="section-label">Doginal Dogs</div>
+      <div class="section-sub">On-chain collection · DOGE blockchain</div>
+    </div>
+
+    <div class="dogs-summary reveal">
+      <div class="ds-card"><div class="ds-val">7</div><div class="ds-lbl">Dogs Owned</div></div>
+      <div class="ds-card"><div class="ds-val">#151</div><div class="ds-lbl">Best Rank</div></div>
+      <div class="ds-card"><div class="ds-val">1</div><div class="ds-lbl">Wizard</div></div>
+      <div class="ds-card"><div class="ds-val">10K</div><div class="ds-lbl">Collection</div></div>
+    </div>
+
+    <div class="dogs-grid" id="dogsGrid"></div>
+  </div>
+</section>
+
+<!-- ═══ DOG MODAL ═══ -->
+<div class="dog-modal-backdrop" id="dogModal">
+  <div class="dog-modal">
+    <div class="dog-modal-img">
+      <img id="dmImg" src="" alt="">
+      <button class="dog-modal-close" id="dmClose">✕</button>
+    </div>
+    <div class="dog-modal-body">
+      <div class="dog-modal-header">
+        <span class="dog-modal-id" id="dmId"></span>
+        <span class="dog-modal-rank" id="dmRank"></span>
+      </div>
+      <div class="dog-modal-traits" id="dmTraits"></div>
+      <div class="dog-modal-floor" id="dmFloor"></div>
+      <div class="dog-modal-note" id="dmNote"></div>
+    </div>
+  </div>
+</div>
+
 <footer>
-  <span class="footer-text">© 2026 GraveLabs</span>
+  <span class="footer-text">© 2026 GraveLabs · No Grave LLC</span>
 </footer>
 
+<!-- ═══ DOGINAL DOGS DATA ═══ -->
+<script>
+const DOGE_USD = 0.091;
+// Custom order: Wizard first, then Helmet, then 420, then rest by rank
+const dogs = [
+  { id:5035, rank:1443, img:'dogs/5035.png', traits:{Background:'Tan',Eyes:'Sleepy',Head:'Wizard',Clothes:'Scarf'}, key:'Wizard', floor:89999, tier:'epic', note:'86 Wizards total' },
+  { id:4370, rank:151, img:'dogs/4370.png', traits:{Background:'Blue',Eyes:'Yellow',Head:'Helmet',Clothes:'Tracksuit',Mouth:'Ball'}, key:'Helmet', floor:75000, tier:'epic', note:'Top 1.5% · Rank #151' },
+  { id:420, rank:2110, img:'dogs/420.png', traits:{Background:'Blue',Eyes:'Square Glasses',Head:'Floppy Ears',Clothes:'Collar'}, key:'Floppy Ears', floor:0, tier:'rare', note:'#420 🌿', priceless:true },
+  { id:8644, rank:7067, img:'dogs/8644.png', traits:{Background:'Green',Eyes:'Square Glasses',Head:'Beret'}, key:'Beret', floor:55000, tier:'rare', note:'98 Berets total' },
+  { id:4707, rank:1629, img:'dogs/4707.png', traits:{Background:'Tan',Eyes:'Red',Head:'Beanie',Clothes:'Scarf'}, key:'Beanie', floor:42000, tier:'rare' },
+  { id:3813, rank:4750, img:'dogs/3813.png', traits:{Background:'Yellow',Eyes:'Visor',Head:'Painter'}, key:'Painter', floor:38000, tier:'rare' },
+  { id:1975, rank:9002, img:'dogs/1975.png', traits:{Background:'Aqua',Eyes:'Black',Head:'Builder'}, key:'Builder', floor:25000 }
+];
+
+// Render image-only grid
+let totalD=0;
+const grid=document.getElementById('dogsGrid');
+dogs.forEach((d,idx)=>{
+  if(!d.priceless) totalD+=d.floor;
+  const el=document.createElement('div');
+  el.className='dcard reveal'+(d.tier==='epic'?' epic':'');
+  el.style.transitionDelay=(idx*0.06)+'s';
+  el.setAttribute('data-dog', idx);
+  const badge = d.tier ? `<span class="dog-badge ${d.tier}">${d.tier==='epic'?'★':'◆'}</span>` : '';
+  el.innerHTML=`<img src="${d.img}" alt="#${d.id}" loading="lazy"><div class="dcard-overlay"><span class="dog-id">#${d.id}</span>${badge}</div>`;
+  grid.appendChild(el);
+});
+// totalVal removed — no est. value shown
+
+// Modal logic
+const modal=document.getElementById('dogModal');
+const dmImg=document.getElementById('dmImg');
+const dmId=document.getElementById('dmId');
+const dmRank=document.getElementById('dmRank');
+const dmTraits=document.getElementById('dmTraits');
+const dmFloor=document.getElementById('dmFloor');
+const dmNote=document.getElementById('dmNote');
+
+function openDog(idx){
+  const d=dogs[idx];
+  dmImg.src=d.img;
+  dmId.textContent='#'+d.id;
+  dmRank.textContent='Rank #'+d.rank.toLocaleString()+' / 10,000';
+  dmTraits.innerHTML=Object.values(d.traits).map(v=>`<span class="dm-trait${v===d.key?' key':''}">${v}</span>`).join('');
+  if(d.priceless){
+    dmFloor.innerHTML='<span class="fl">Value</span><span class="fd priceless">PRICELESS</span>';
+  } else {
+    const usd='~$'+(d.floor*DOGE_USD/1000).toFixed(1)+'k';
+    dmFloor.innerHTML=`<span class="fl">Floor</span><span class="fd">Ð${d.floor.toLocaleString()}</span><span class="fu">${usd}</span>`;
+  }
+  dmNote.textContent=d.note||'';
+  modal.classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeDog(){
+  modal.classList.remove('open');
+  document.body.style.overflow='';
+}
+grid.addEventListener('click',e=>{
+  const card=e.target.closest('.dcard');
+  if(card) openDog(+card.dataset.dog);
+});
+document.getElementById('dmClose').addEventListener('click',closeDog);
+modal.addEventListener('click',e=>{if(e.target===modal)closeDog();});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeDog();});
+</script>
+
+<!-- ═══ 3D MAP + EFFECTS ═══ -->
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js"}}</script>
 <script type="module">
 import * as THREE from 'three';
@@ -414,14 +830,11 @@ import * as THREE from 'three';
 (function(){
   const container = document.getElementById('map3d');
   if(!container) return;
-  const W = 280, H = 280;
+  const W = 300, H = 300;
 
-  // Simplex noise
   class SN{constructor(seed=0){this.grad3=[[1,1,0],[-1,1,0],[1,-1,0],[-1,-1,0],[1,0,1],[-1,0,1],[1,0,-1],[-1,0,-1],[0,1,1],[0,-1,1],[0,1,-1],[0,-1,-1]];this.p=[];for(let i=0;i<256;i++)this.p[i]=i;let n,s=seed;for(let i=255;i>0;i--){s=(s*16807+0)%2147483647;n=s%(i+1);[this.p[i],this.p[n]]=[this.p[n],this.p[i]];}this.perm=new Uint8Array(512);this.permMod12=new Uint8Array(512);for(let i=0;i<512;i++){this.perm[i]=this.p[i&255];this.permMod12[i]=this.perm[i]%12;}}noise2D(x,y){const F2=0.5*(Math.sqrt(3)-1),G2=(3-Math.sqrt(3))/6;const s=(x+y)*F2;const i=Math.floor(x+s),j=Math.floor(y+s);const t=(i+j)*G2;const x0=x-(i-t),y0=y-(j-t);const i1=x0>y0?1:0,j1=x0>y0?0:1;const x1=x0-i1+G2,y1=y0-j1+G2,x2=x0-1+2*G2,y2=y0-1+2*G2;const ii=i&255,jj=j&255;const gi0=this.permMod12[ii+this.perm[jj]],gi1=this.permMod12[ii+i1+this.perm[jj+j1]],gi2=this.permMod12[ii+1+this.perm[jj+1]];let n0=0,n1=0,n2=0;let t0=0.5-x0*x0-y0*y0;if(t0>0){t0*=t0;const g=this.grad3[gi0];n0=t0*t0*(g[0]*x0+g[1]*y0);}let t1=0.5-x1*x1-y1*y1;if(t1>0){t1*=t1;const g=this.grad3[gi1];n1=t1*t1*(g[0]*x1+g[1]*y1);}let t2=0.5-x2*x2-y2*y2;if(t2>0){t2*=t2;const g=this.grad3[gi2];n2=t2*t2*(g[0]*x2+g[1]*y2);}return 70*(n0+n1+n2);}}
 
   const noise = new SN(42), noise2 = new SN(137);
-
-  // Realms (simplified positions + colors)
   const realms = {
     'Frosthollow':{x:-350,z:-300,c:[0.85,0.92,1.0],c2:[0.6,0.75,0.95],elev:80},
     'Abyssal':{x:0,z:-350,c:[0.25,0.3,0.4],c2:[0.15,0.2,0.35],elev:20},
@@ -432,381 +845,108 @@ import * as THREE from 'three';
     'Shadowmire':{x:0,z:400,c:[0.12,0.15,0.08],c2:[0.18,0.2,0.1],elev:-5},
     'Starter':{x:0,z:0,c:[0.45,0.55,0.35],c2:[0.5,0.6,0.4],elev:10}
   };
-
   function realmInf(x,z){const inf={};let tw=0;for(const[n,r]of Object.entries(realms)){const dx=x-r.x,dz=z-r.z,d=Math.sqrt(dx*dx+dz*dz),w=Math.pow(Math.max(0,1-d/400),2.5);if(w>0){inf[n]=w;tw+=w;}}if(tw===0)return{Starter:1};for(const k in inf)inf[k]/=tw;return inf;}
-
   function getH(x,z){const inf=realmInf(x,z);let be=0;for(const[n,w]of Object.entries(inf))be+=(realms[n]?.elev||10)*w;let n0=noise.noise2D(x*0.004,z*0.004)*30;n0+=noise.noise2D(x*0.01,z*0.01)*12;n0+=noise2.noise2D(x*0.025,z*0.025)*5;const fh=inf.Frosthollow||0;if(fh>0.1){n0+=Math.abs(noise.noise2D(x*0.015,z*0.015))*80*fh;n0+=Math.abs(noise2.noise2D(x*0.03,z*0.03))*30*fh;}const ew=inf.Ember||0;if(ew>0.1){const cal=noise.noise2D(x*0.008+5,z*0.008+5);if(cal>0.3)n0-=25*ew*(cal-0.3)*3;else n0+=20*ew;}const sh=inf.Sunward||0;if(sh>0.2){const pl=noise.noise2D(x*0.005+10,z*0.005+10);n0+=(pl>0?40:15)*sh;}const vh=inf.Violet||0;if(vh>0.1){const te=noise.noise2D(x*0.006,z*0.006)*40*vh;n0+=Math.round(te/10)*10;}return be+n0;}
-
   function getCol(x,z,h){const inf=realmInf(x,z);let r=0,g=0,b=0;for(const[n,w]of Object.entries(inf)){const rm=realms[n];if(!rm)continue;const t=Math.min(1,Math.max(0,(h-(rm.elev-20))/60));const cr=rm.c[0]+(rm.c2[0]-rm.c[0])*(1-t),cg=rm.c[1]+(rm.c2[1]-rm.c[1])*(1-t),cb=rm.c[2]+(rm.c2[2]-rm.c[2])*(1-t);r+=cr*w;g+=cg*w;b+=cb*w;}return[r,g,b];}
 
-  // Renderer
   const renderer = new THREE.WebGLRenderer({antialias:true,alpha:true});
-  renderer.setSize(W,H);
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
-  renderer.toneMapping = THREE.ACESFilmicToneMapping;
-  renderer.toneMappingExposure = 1.1;
+  renderer.setSize(W,H);renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
+  renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.1;
   container.appendChild(renderer.domElement);
-
-  const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(40,1,1,3000);
-  camera.position.set(0,500,600);
-  camera.lookAt(0,0,0);
-
-  // Lighting
+  const scene=new THREE.Scene();const camera=new THREE.PerspectiveCamera(40,1,1,3000);
+  camera.position.set(0,500,600);camera.lookAt(0,0,0);
   scene.add(new THREE.AmbientLight(0xfff0dd,0.4));
-  const sun = new THREE.DirectionalLight(0xfff4e0,1.2);
-  sun.position.set(200,400,-100);
-  scene.add(sun);
+  const sun=new THREE.DirectionalLight(0xfff4e0,1.2);sun.position.set(200,400,-100);scene.add(sun);
   scene.add(new THREE.HemisphereLight(0x8899bb,0x334422,0.3));
-
-  // Terrain
-  const subs = 80;
-  const geo = new THREE.PlaneGeometry(1100,1100,subs,subs);
-  geo.rotateX(-Math.PI/2);
-  const pos = geo.attributes.position;
-  const cols = new Float32Array(pos.count*3);
+  const subs=80,geo=new THREE.PlaneGeometry(1100,1100,subs,subs);geo.rotateX(-Math.PI/2);
+  const pos=geo.attributes.position;const cols=new Float32Array(pos.count*3);
   for(let i=0;i<pos.count;i++){const x=pos.getX(i),z=pos.getZ(i),h=getH(x,z);pos.setY(i,h);const c=getCol(x,z,h);cols[i*3]=c[0];cols[i*3+1]=c[1];cols[i*3+2]=c[2];}
-  geo.setAttribute('color',new THREE.Float32BufferAttribute(cols,3));
-  geo.computeVertexNormals();
-  const terrain = new THREE.Mesh(geo,new THREE.MeshStandardMaterial({vertexColors:true,roughness:0.85,metalness:0.05}));
-  scene.add(terrain);
-
-  // Water
-  const wGeo = new THREE.PlaneGeometry(1400,1400);
-  wGeo.rotateX(-Math.PI/2);
-  const water = new THREE.Mesh(wGeo,new THREE.MeshPhysicalMaterial({color:0x0a2040,transparent:true,opacity:0.7,roughness:0.15,metalness:0.3}));
-  water.position.y = -2;
-  scene.add(water);
-
-  // Seven Moons
-  const moonData = [
-    {name:'Emberhowl',color:0xFF6B00,cycle:18},
-    {name:'Solaris',color:0xF1C40F,cycle:12},
-    {name:'Deepwell',color:0x3498DB,cycle:13},
-    {name:'Evergreen',color:0x2ECC71,cycle:18},
-    {name:'Umbra',color:0x9B6EFF,cycle:14},
-    {name:'Roseglow',color:0xFF69B4,cycle:11},
-    {name:'Palehowl',color:0xdddddd,cycle:30}
-  ];
-  const moonMeshes = [];
-  for(let i=0;i<7;i++){
-    const md = moonData[i];
-    const r = i===6 ? 4 : 7;
-    const mat = new THREE.MeshStandardMaterial({color:md.color,emissive:md.color,emissiveIntensity:0.9,transparent:true,opacity:0.95});
-    const moon = new THREE.Mesh(new THREE.SphereGeometry(r,24,16),mat);
-    // Glow
-    const glowGeo = new THREE.SphereGeometry(r*1.6,16,12);
-    const glowMat = new THREE.MeshBasicMaterial({color:md.color,transparent:true,opacity:0.08});
-    const glow = new THREE.Mesh(glowGeo,glowMat);
-    moon.add(glow);
-    moon.userData = {orbitR:i===6?250:350,baseY:i===6?280:320,speed:(1/md.cycle)*0.3,offset:(i/7)*Math.PI*2};
-    scene.add(moon);
-    moonMeshes.push(moon);
-  }
-
-  // Wandering PFP
-  let pfpMesh = null, pfpRing = null;
-  let wanderAngle = 0, wanderRadius = 150, wanderTarget = {x:0,z:0}, wanderPos = {x:0,z:0};
-  function newWanderTarget(){
-    const a = Math.random()*Math.PI*2;
-    const r = 80 + Math.random()*250;
-    wanderTarget.x = Math.cos(a)*r;
-    wanderTarget.z = Math.sin(a)*r;
-  }
-  newWanderTarget();
-
-  const loader = new THREE.TextureLoader();
-  loader.load('wizard-dog.jpg',function(tex){
-    tex.colorSpace = THREE.SRGBColorSpace;
-    const pfpGeo = new THREE.PlaneGeometry(40,40);
-    const pfpMat = new THREE.MeshBasicMaterial({map:tex,transparent:true,side:THREE.DoubleSide});
-    pfpMesh = new THREE.Mesh(pfpGeo,pfpMat);
-    pfpMesh.userData.billboard = true;
-    scene.add(pfpMesh);
-    // Glow ring under pfp
-    const ringGeo = new THREE.RingGeometry(15,22,32);
-    const ringMat = new THREE.MeshBasicMaterial({color:0x00e5ff,transparent:true,opacity:0.12,side:THREE.DoubleSide});
-    pfpRing = new THREE.Mesh(ringGeo,ringMat);
-    pfpRing.rotation.x = -Math.PI/2;
-    scene.add(pfpRing);
-  });
-
-  // Snow particles
-  const snowCount = 600;
-  const snowGeo = new THREE.BufferGeometry();
-  const snowPos = new Float32Array(snowCount*3);
-  for(let i=0;i<snowCount;i++){
-    snowPos[i*3] = (Math.random()-0.5)*1200;
-    snowPos[i*3+1] = Math.random()*400+50;
-    snowPos[i*3+2] = (Math.random()-0.5)*1200;
-  }
+  geo.setAttribute('color',new THREE.Float32BufferAttribute(cols,3));geo.computeVertexNormals();
+  scene.add(new THREE.Mesh(geo,new THREE.MeshStandardMaterial({vertexColors:true,roughness:0.85,metalness:0.05})));
+  const wGeo=new THREE.PlaneGeometry(1400,1400);wGeo.rotateX(-Math.PI/2);
+  const water=new THREE.Mesh(wGeo,new THREE.MeshPhysicalMaterial({color:0x0a2040,transparent:true,opacity:0.7,roughness:0.15,metalness:0.3}));
+  water.position.y=-2;scene.add(water);
+  const moonData=[{c:0xFF6B00,cy:18},{c:0xF1C40F,cy:12},{c:0x3498DB,cy:13},{c:0x2ECC71,cy:18},{c:0x9B6EFF,cy:14},{c:0xFF69B4,cy:11},{c:0xdddddd,cy:30}];
+  const moons=[];
+  moonData.forEach((md,i)=>{const r=i===6?4:7;const mat=new THREE.MeshStandardMaterial({color:md.c,emissive:md.c,emissiveIntensity:0.9,transparent:true,opacity:0.95});const m=new THREE.Mesh(new THREE.SphereGeometry(r,24,16),mat);const gm=new THREE.Mesh(new THREE.SphereGeometry(r*1.6,16,12),new THREE.MeshBasicMaterial({color:md.c,transparent:true,opacity:0.08}));m.add(gm);m.userData={orbitR:i===6?250:350,baseY:i===6?280:320,speed:(1/md.cy)*0.3,offset:(i/7)*Math.PI*2};scene.add(m);moons.push(m);});
+  let pfpMesh=null,pfpRing=null,wanderTarget={x:0,z:0},wanderPos={x:0,z:0};
+  function newWT(){const a=Math.random()*Math.PI*2,r=80+Math.random()*250;wanderTarget.x=Math.cos(a)*r;wanderTarget.z=Math.sin(a)*r;}newWT();
+  new THREE.TextureLoader().load('wizard-dog.jpg',tex=>{tex.colorSpace=THREE.SRGBColorSpace;pfpMesh=new THREE.Mesh(new THREE.PlaneGeometry(40,40),new THREE.MeshBasicMaterial({map:tex,transparent:true,side:THREE.DoubleSide}));scene.add(pfpMesh);pfpRing=new THREE.Mesh(new THREE.RingGeometry(15,22,32),new THREE.MeshBasicMaterial({color:0x00e5ff,transparent:true,opacity:0.12,side:THREE.DoubleSide}));pfpRing.rotation.x=-Math.PI/2;scene.add(pfpRing);});
+  const snowCount=600,snowGeo=new THREE.BufferGeometry(),snowPos=new Float32Array(snowCount*3);
+  for(let i=0;i<snowCount;i++){snowPos[i*3]=(Math.random()-0.5)*1200;snowPos[i*3+1]=Math.random()*400+50;snowPos[i*3+2]=(Math.random()-0.5)*1200;}
   snowGeo.setAttribute('position',new THREE.BufferAttribute(snowPos,3));
-  const snowMat = new THREE.PointsMaterial({color:0xffffff,size:3,transparent:true,opacity:0.7,depthWrite:false});
-  const snow = new THREE.Points(snowGeo,snowMat);
-  scene.add(snow);
-
-  // Blizzard mode
-  let blizzardMode = false;
-  let blizzardTimer = null;
-  const normalSnowSpeed = 0.8;
-  const blizzardSnowSpeed = 4;
-  const normalSnowSway = 0.15;
-  const blizzardSnowSway = 2.5;
-  window.triggerBlizzard = function(){
-    blizzardMode = true;
-    snowMat.size = 5;
-    snowMat.opacity = 0.95;
-    if(blizzardTimer) clearTimeout(blizzardTimer);
-    blizzardTimer = setTimeout(function(){
-      blizzardMode = false;
-      snowMat.size = 3;
-      snowMat.opacity = 0.7;
-    }, 4500);
-  };
-
-  // Auto-rotate + animate
-  let angle = 0, time = 0;
-  function animate(){
-    requestAnimationFrame(animate);
-    angle += 0.003;
-    time += 0.016;
-    camera.position.x = Math.sin(angle)*700;
-    camera.position.z = Math.cos(angle)*700;
-    camera.position.y = 450;
-    camera.lookAt(0,20,0);
-
-    // Moons orbit
-    for(const m of moonMeshes){
-      const d = m.userData;
-      const a = d.offset + time*d.speed;
-      m.position.set(Math.cos(a)*d.orbitR, d.baseY+Math.sin(a*0.7)*25, Math.sin(a)*d.orbitR*0.5);
-    }
-
-    // Snow fall (with blizzard mode)
-    const fallSpeed = blizzardMode ? blizzardSnowSpeed : normalSnowSpeed;
-    const swayAmt = blizzardMode ? blizzardSnowSway : normalSnowSway;
-    const sp = snow.geometry.attributes.position.array;
-    for(let i=0;i<snowCount;i++){
-      sp[i*3+1] -= fallSpeed + Math.sin(i)*0.3;
-      sp[i*3] += Math.sin(time*0.5+i)*swayAmt + (blizzardMode ? Math.cos(i*0.7+time)*1.5 : 0);
-      sp[i*3+2] += blizzardMode ? Math.sin(i*0.3+time*0.8)*1.0 : 0;
-      if(sp[i*3+1]<-10){sp[i*3+1]=350+Math.random()*100;sp[i*3]=(Math.random()-0.5)*1200;sp[i*3+2]=(Math.random()-0.5)*1200;}
-    }
-    snow.geometry.attributes.position.needsUpdate = true;
-
-    // Wander PFP
-    if(pfpMesh){
-      const dx = wanderTarget.x-wanderPos.x, dz = wanderTarget.z-wanderPos.z;
-      const dist = Math.sqrt(dx*dx+dz*dz);
-      if(dist<10) newWanderTarget();
-      const speed = 0.4;
-      wanderPos.x += (dx/dist)*speed;
-      wanderPos.z += (dz/dist)*speed;
-      const h = getH(wanderPos.x,wanderPos.z);
-      pfpMesh.position.set(wanderPos.x, h+45, wanderPos.z);
-      pfpMesh.lookAt(camera.position);
-      if(pfpRing){
-        pfpRing.position.set(wanderPos.x, h+2, wanderPos.z);
-      }
-    }
-
-    renderer.render(scene,camera);
-  }
+  const snowMat=new THREE.PointsMaterial({color:0xffffff,size:3,transparent:true,opacity:0.7,depthWrite:false});
+  const snow=new THREE.Points(snowGeo,snowMat);scene.add(snow);
+  let bliz=false,blizT=null;
+  window.triggerBlizzard=()=>{bliz=true;snowMat.size=5;snowMat.opacity=0.95;if(blizT)clearTimeout(blizT);blizT=setTimeout(()=>{bliz=false;snowMat.size=3;snowMat.opacity=0.7;},4500);};
+  let angle=0,time=0;
+  function animate(){requestAnimationFrame(animate);angle+=0.003;time+=0.016;
+    camera.position.x=Math.sin(angle)*700;camera.position.z=Math.cos(angle)*700;camera.position.y=450;camera.lookAt(0,20,0);
+    moons.forEach(m=>{const d=m.userData,a=d.offset+time*d.speed;m.position.set(Math.cos(a)*d.orbitR,d.baseY+Math.sin(a*0.7)*25,Math.sin(a)*d.orbitR*0.5);});
+    const fs=bliz?4:0.8,sw=bliz?2.5:0.15;const sp=snow.geometry.attributes.position.array;
+    for(let i=0;i<snowCount;i++){sp[i*3+1]-=fs+Math.sin(i)*0.3;sp[i*3]+=Math.sin(time*0.5+i)*sw+(bliz?Math.cos(i*0.7+time)*1.5:0);sp[i*3+2]+=bliz?Math.sin(i*0.3+time*0.8)*1.0:0;if(sp[i*3+1]<-10){sp[i*3+1]=350+Math.random()*100;sp[i*3]=(Math.random()-0.5)*1200;sp[i*3+2]=(Math.random()-0.5)*1200;}}
+    snow.geometry.attributes.position.needsUpdate=true;
+    if(pfpMesh){const dx=wanderTarget.x-wanderPos.x,dz=wanderTarget.z-wanderPos.z,dist=Math.sqrt(dx*dx+dz*dz);if(dist<10)newWT();wanderPos.x+=(dx/dist)*0.4;wanderPos.z+=(dz/dist)*0.4;const h=getH(wanderPos.x,wanderPos.z);pfpMesh.position.set(wanderPos.x,h+45,wanderPos.z);pfpMesh.lookAt(camera.position);if(pfpRing)pfpRing.position.set(wanderPos.x,h+2,wanderPos.z);}
+    renderer.render(scene,camera);}
   animate();
 })();
 </script>
 
+<!-- ═══ VISUALIZER + HOWL + REVEAL ═══ -->
 <script>
 (function() {
+  // Reveal with stagger
   const els = document.querySelectorAll('.reveal');
-  const obs = new IntersectionObserver(function(entries) {
-    entries.forEach(function(e) {
-      if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); }
-    });
-  }, { threshold: 0.1 });
-  els.forEach(function(el) { obs.observe(el); });
-  requestAnimationFrame(function() {
-    els.forEach(function(el) {
-      if (el.getBoundingClientRect().top < window.innerHeight * 0.9) {
-        el.classList.add('visible');
-        obs.unobserve(el);
-      }
-    });
-  });
+  const obs = new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);}});},{threshold:0.08, rootMargin:'0px 0px -40px 0px'});
+  els.forEach(el=>obs.observe(el));
+  requestAnimationFrame(()=>{els.forEach(el=>{if(el.getBoundingClientRect().top<window.innerHeight*0.85){el.classList.add('visible');obs.unobserve(el);}});});
 
-  // ── Music Visualizer (ambient procedural) ──
+  // Visualizer
   const vizWrap = document.getElementById('visualizer');
-  const barCount = 32;
-  const bars = [];
-  for(let i=0;i<barCount;i++){
-    const bar = document.createElement('div');
-    bar.className = 'viz-bar';
-    bar.style.height = '4px';
-    vizWrap.appendChild(bar);
-    bars.push(bar);
-  }
-  function animViz(){
-    const t = Date.now()*0.003;
-    for(let i=0;i<barCount;i++){
-      const h = 4 + Math.abs(Math.sin(t+i*0.4))*20 + Math.abs(Math.cos(t*1.3+i*0.6))*12;
-      bars[i].style.height = h+'px';
-    }
-    requestAnimationFrame(animViz);
-  }
-  animViz();
+  const barCount = 36, bars = [];
+  for(let i=0;i<barCount;i++){const bar=document.createElement('div');bar.className='viz-bar';bar.style.height='3px';vizWrap.appendChild(bar);bars.push(bar);}
 
-  // ── Easter Egg: Click PFP → Howl + Blizzard ──
-  let howling = false;
-  const pfpEl = document.getElementById('pfpClick');
-  pfpEl.addEventListener('click', function(){
-    if(howling) return;
-    howling = true;
-    pfpEl.classList.add('howling');
-
-    // Synthesize wolf howl with Web Audio API
-    const ctx = new (window.AudioContext || window.webkitAudioContext)();
-    const dur = 4.0;
-    const t = ctx.currentTime;
-
-    // Master reverb (convolver with impulse)
-    const convolver = ctx.createConvolver();
-    const irLen = ctx.sampleRate * 2;
-    const irBuf = ctx.createBuffer(2, irLen, ctx.sampleRate);
-    for(let ch=0;ch<2;ch++){const d=irBuf.getChannelData(ch);for(let i=0;i<irLen;i++){d[i]=(Math.random()*2-1)*Math.pow(1-i/irLen,2.5)*0.3;}}
-    convolver.buffer = irBuf;
-    const dryGain = ctx.createGain(); dryGain.gain.value = 0.7;
-    const wetGain = ctx.createGain(); wetGain.gain.value = 0.4;
-    const masterGain = ctx.createGain(); masterGain.gain.value = 0.6;
-    dryGain.connect(masterGain);
-    convolver.connect(wetGain);
-    wetGain.connect(masterGain);
-    masterGain.connect(ctx.destination);
-
-    // Vibrato LFO (wolves waver their pitch)
-    const lfo = ctx.createOscillator();
-    const lfoGain = ctx.createGain();
-    lfo.type = 'sine';
-    lfo.frequency.setValueAtTime(4, t);
-    lfo.frequency.linearRampToValueAtTime(5.5, t+1.5);
-    lfo.frequency.linearRampToValueAtTime(3, t+dur);
-    lfoGain.gain.setValueAtTime(8, t);
-    lfoGain.gain.linearRampToValueAtTime(15, t+1);
-    lfoGain.gain.linearRampToValueAtTime(10, t+dur);
-    lfo.connect(lfoGain);
-    lfo.start(t);
-    lfo.stop(t+dur);
-
-    // Main howl — low mournful tone, rises slowly then sustains then trails off
-    const osc1 = ctx.createOscillator();
-    const g1 = ctx.createGain();
-    osc1.type = 'sine';
-    osc1.frequency.setValueAtTime(180, t);
-    osc1.frequency.exponentialRampToValueAtTime(380, t+0.8);
-    osc1.frequency.exponentialRampToValueAtTime(440, t+1.3);
-    osc1.frequency.setValueAtTime(440, t+2.2);
-    osc1.frequency.exponentialRampToValueAtTime(350, t+3.2);
-    osc1.frequency.exponentialRampToValueAtTime(200, t+dur);
-    lfoGain.connect(osc1.frequency);
-    g1.gain.setValueAtTime(0, t);
-    g1.gain.linearRampToValueAtTime(0.35, t+0.5);
-    g1.gain.setValueAtTime(0.35, t+2.2);
-    g1.gain.linearRampToValueAtTime(0.2, t+3.2);
-    g1.gain.exponentialRampToValueAtTime(0.001, t+dur);
-    osc1.connect(g1);
-    g1.connect(dryGain);
-    g1.connect(convolver);
-    osc1.start(t); osc1.stop(t+dur);
-
-    // Second harmonic (octave up, quieter — gives fullness)
-    const osc2 = ctx.createOscillator();
-    const g2 = ctx.createGain();
-    osc2.type = 'sine';
-    osc2.frequency.setValueAtTime(360, t);
-    osc2.frequency.exponentialRampToValueAtTime(760, t+0.8);
-    osc2.frequency.exponentialRampToValueAtTime(880, t+1.3);
-    osc2.frequency.setValueAtTime(880, t+2.2);
-    osc2.frequency.exponentialRampToValueAtTime(700, t+3.2);
-    osc2.frequency.exponentialRampToValueAtTime(400, t+dur);
-    lfoGain.connect(osc2.frequency);
-    g2.gain.setValueAtTime(0, t);
-    g2.gain.linearRampToValueAtTime(0.1, t+0.6);
-    g2.gain.setValueAtTime(0.1, t+2.2);
-    g2.gain.exponentialRampToValueAtTime(0.001, t+dur);
-    osc2.connect(g2);
-    g2.connect(dryGain);
-    g2.connect(convolver);
-    osc2.start(t); osc2.stop(t+dur);
-
-    // Third harmonic (fifth above — wolves hit these overtones)
-    const osc3 = ctx.createOscillator();
-    const g3 = ctx.createGain();
-    osc3.type = 'triangle';
-    osc3.frequency.setValueAtTime(270, t);
-    osc3.frequency.exponentialRampToValueAtTime(570, t+0.8);
-    osc3.frequency.exponentialRampToValueAtTime(660, t+1.3);
-    osc3.frequency.setValueAtTime(660, t+2.2);
-    osc3.frequency.exponentialRampToValueAtTime(525, t+3.2);
-    osc3.frequency.exponentialRampToValueAtTime(300, t+dur);
-    g3.gain.setValueAtTime(0, t);
-    g3.gain.linearRampToValueAtTime(0.06, t+0.8);
-    g3.gain.setValueAtTime(0.06, t+2.0);
-    g3.gain.exponentialRampToValueAtTime(0.001, t+dur);
-    osc3.connect(g3);
-    g3.connect(dryGain);
-    g3.connect(convolver);
-    osc3.start(t); osc3.stop(t+dur);
-
-    // Breath/wind noise filtered to follow the howl
-    const bufLen = ctx.sampleRate * dur;
-    const buf = ctx.createBuffer(1, bufLen, ctx.sampleRate);
-    const data = buf.getChannelData(0);
-    for(let i=0;i<bufLen;i++) data[i] = (Math.random()*2-1);
-    const noiseSrc = ctx.createBufferSource();
-    noiseSrc.buffer = buf;
-    const nf = ctx.createBiquadFilter();
-    nf.type = 'bandpass';
-    nf.frequency.setValueAtTime(300, t);
-    nf.frequency.exponentialRampToValueAtTime(800, t+0.8);
-    nf.frequency.setValueAtTime(800, t+2.2);
-    nf.frequency.exponentialRampToValueAtTime(400, t+dur);
-    nf.Q.value = 3;
-    const ng = ctx.createGain();
-    ng.gain.setValueAtTime(0, t);
-    ng.gain.linearRampToValueAtTime(0.08, t+0.4);
-    ng.gain.setValueAtTime(0.08, t+2.2);
-    ng.gain.exponentialRampToValueAtTime(0.001, t+dur);
-    noiseSrc.connect(nf);
-    nf.connect(ng);
-    ng.connect(dryGain);
-    ng.connect(convolver);
-    noiseSrc.start(t); noiseSrc.stop(t+dur);
-
-    // Blizzard: temporarily increase snow intensity
-    if(window.triggerBlizzard) window.triggerBlizzard();
-
-    // Boost visualizer during howl
-    window.howlActive = true;
-    setTimeout(function(){
-      window.howlActive = false;
-      pfpEl.classList.remove('howling');
-      howling = false;
-    }, 4500);
-  });
-
-  // Override viz animation to react to howl
-  const origAnimViz = animViz;
   function animVizHowl(){
-    const t = Date.now()*0.003;
-    const boost = window.howlActive ? 2.5 : 1;
+    const t=Date.now()*0.003;
+    const boost=window.howlActive?2.8:1;
     for(let i=0;i<barCount;i++){
-      const h = 4 + (Math.abs(Math.sin(t+i*0.4))*20 + Math.abs(Math.cos(t*1.3+i*0.6))*12)*boost;
-      bars[i].style.height = Math.min(h,40)+'px';
-      bars[i].style.opacity = window.howlActive ? '1' : '0.6';
+      const h=3+(Math.abs(Math.sin(t+i*0.35))*18+Math.abs(Math.cos(t*1.4+i*0.55))*10)*boost;
+      bars[i].style.height=Math.min(h,44)+'px';
+      bars[i].style.opacity=window.howlActive?'1':'0.5';
     }
     requestAnimationFrame(animVizHowl);
   }
-  // Replace the original animation loop
   animVizHowl();
+
+  // Wolf howl easter egg
+  let howling=false;
+  document.getElementById('pfpClick').addEventListener('click',function(){
+    if(howling)return;howling=true;this.classList.add('howling');
+    const ctx=new(window.AudioContext||window.webkitAudioContext)(),dur=4.0,t=ctx.currentTime;
+    const conv=ctx.createConvolver(),irLen=ctx.sampleRate*2,irBuf=ctx.createBuffer(2,irLen,ctx.sampleRate);
+    for(let ch=0;ch<2;ch++){const d=irBuf.getChannelData(ch);for(let i=0;i<irLen;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/irLen,2.5)*0.3;}
+    conv.buffer=irBuf;
+    const dry=ctx.createGain(),wet=ctx.createGain(),master=ctx.createGain();
+    dry.gain.value=0.7;wet.gain.value=0.4;master.gain.value=0.6;
+    dry.connect(master);conv.connect(wet);wet.connect(master);master.connect(ctx.destination);
+    const lfo=ctx.createOscillator(),lfoG=ctx.createGain();
+    lfo.type='sine';lfo.frequency.setValueAtTime(4,t);lfo.frequency.linearRampToValueAtTime(5.5,t+1.5);lfo.frequency.linearRampToValueAtTime(3,t+dur);
+    lfoG.gain.setValueAtTime(8,t);lfoG.gain.linearRampToValueAtTime(15,t+1);lfoG.gain.linearRampToValueAtTime(10,t+dur);
+    lfo.connect(lfoG);lfo.start(t);lfo.stop(t+dur);
+    function mkOsc(type,freqs,gains){const o=ctx.createOscillator(),g=ctx.createGain();o.type=type;freqs.forEach(([v,at])=>o.frequency[at<0.01?'setValueAtTime':'exponentialRampToValueAtTime'](v,t+at));lfoG.connect(o.frequency);gains.forEach(([v,at])=>g.gain[v<0.002?'exponentialRampToValueAtTime':at<0.01?'setValueAtTime':'linearRampToValueAtTime'](v,t+at));o.connect(g);g.connect(dry);g.connect(conv);o.start(t);o.stop(t+dur);}
+    mkOsc('sine',[[180,0],[380,0.8],[440,1.3],[440,2.2],[350,3.2],[200,dur]],[[0,0],[0.35,0.5],[0.35,2.2],[0.2,3.2],[0.001,dur]]);
+    mkOsc('sine',[[360,0],[760,0.8],[880,1.3],[880,2.2],[700,3.2],[400,dur]],[[0,0],[0.1,0.6],[0.1,2.2],[0.001,dur]]);
+    mkOsc('triangle',[[270,0],[570,0.8],[660,1.3],[660,2.2],[525,3.2],[300,dur]],[[0,0],[0.06,0.8],[0.06,2.0],[0.001,dur]]);
+    const bLen=ctx.sampleRate*dur,buf=ctx.createBuffer(1,bLen,ctx.sampleRate),bd=buf.getChannelData(0);for(let i=0;i<bLen;i++)bd[i]=Math.random()*2-1;
+    const ns=ctx.createBufferSource();ns.buffer=buf;const nf=ctx.createBiquadFilter();nf.type='bandpass';nf.Q.value=3;
+    nf.frequency.setValueAtTime(300,t);nf.frequency.exponentialRampToValueAtTime(800,t+0.8);nf.frequency.setValueAtTime(800,t+2.2);nf.frequency.exponentialRampToValueAtTime(400,t+dur);
+    const ng=ctx.createGain();ng.gain.setValueAtTime(0,t);ng.gain.linearRampToValueAtTime(0.08,t+0.4);ng.gain.setValueAtTime(0.08,t+2.2);ng.gain.exponentialRampToValueAtTime(0.001,t+dur);
+    ns.connect(nf);nf.connect(ng);ng.connect(dry);ng.connect(conv);ns.start(t);ns.stop(t+dur);
+    if(window.triggerBlizzard)window.triggerBlizzard();
+    window.howlActive=true;
+    const self=this;
+    setTimeout(()=>{window.howlActive=false;self.classList.remove('howling');howling=false;},4500);
+  });
 })();
 </script>
 </body>
