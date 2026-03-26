@@ -25,6 +25,10 @@ a{color:inherit;text-decoration:none}
 .hero-nav a{font-size:0.75rem;font-weight:400;color:rgba(255,255,255,0.35);letter-spacing:0.02em;transition:color 0.3s}
 .hero-nav a:hover{color:rgba(255,255,255,0.9)}
 .hero-nav .sep{width:1px;height:12px;background:rgba(255,255,255,0.1)}
+.hero-title-row{display:flex;align-items:center;justify-content:center;gap:clamp(12px,2vw,20px);flex-wrap:nowrap}
+.tm-badge{flex-shrink:0;transition:opacity 0.3s;opacity:0.5}
+.tm-badge:hover{opacity:1}
+.tm-badge img{width:clamp(36px,5vw,52px);height:clamp(36px,5vw,52px);border-radius:10px;display:block}
 .scroll-line{position:absolute;bottom:40px;left:50%;transform:translateX(-50%);z-index:2;display:flex;flex-direction:column;align-items:center;gap:8px}
 .scroll-line span{font-family:'Silkscreen',cursive;font-size:0.5rem;letter-spacing:0.15em;color:rgba(255,255,255,0.2);text-transform:uppercase}
 .scroll-line::after{content:'';width:1px;height:40px;background:linear-gradient(rgba(255,255,255,0.2),transparent);animation:pulse-line 2s ease infinite}
@@ -160,24 +164,12 @@ a{color:inherit;text-decoration:none}
   <div class="hero-world" id="map3d"></div>
   <div class="hero-fade"></div>
   <div class="hero-overlay">
-    <h1 id="pfpClick" style="cursor:pointer" title="Click me 🐺">GRAVE</h1>
-    <a href="https://typemedia.net" target="_blank" class="tm-logo" title="Type Media" style="display:block;margin:24px auto 28px;opacity:0.35;transition:opacity 0.3s" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='0.35'">
-      <svg viewBox="0 0 48 48" width="52" height="52" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <rect rx="10" width="48" height="48" fill="rgba(255,255,255,0.06)"/>
-        <!-- T crossbar -->
-        <rect x="8" y="10" width="32" height="5" rx="1" fill="white"/>
-        <!-- T stem -->
-        <rect x="21.5" y="10" width="5" height="14" rx="1" fill="white"/>
-        <!-- M left leg -->
-        <polygon points="10,26 15,26 15,38 10,38" fill="white"/>
-        <!-- M right leg -->
-        <polygon points="33,26 38,26 38,38 33,38" fill="white"/>
-        <!-- M left peak -->
-        <polygon points="15,26 24,34 24,38 19,38 15,34" fill="white"/>
-        <!-- M right peak -->
-        <polygon points="33,26 24,34 24,38 29,38 33,34" fill="white"/>
-      </svg>
-    </a>
+    <div class="hero-title-row" id="pfpClick" style="cursor:pointer" title="Click me 🐺">
+      <h1>GRAVE</h1>
+      <a href="https://typemedia.net" target="_blank" class="tm-badge" onclick="event.stopPropagation()">
+        <img src="typemedia-logo.jpg" alt="Type Media">
+      </a>
+    </div>
     <p>Audio engineer & web3 creator building at the intersection of sound, code, and on-chain art.</p>
     <div class="hero-nav">
       <a href="https://x.com/GraveMetaX" target="_blank">𝕏</a>
