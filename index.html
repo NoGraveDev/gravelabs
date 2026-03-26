@@ -422,18 +422,33 @@ a{color:inherit;text-decoration:none}
     "'Courier New',monospace"
   ];
   const finalFont="'Silkscreen',cursive";
-  let i=0;
-  const total=14; // number of flips
-  const speed=55; // ms per flip
-  el.style.transition='none';
-  const iv=setInterval(function(){
-    el.style.fontFamily=fonts[i%fonts.length];
-    i++;
-    if(i>=total){
-      clearInterval(iv);
-      el.style.fontFamily=finalFont;
-    }
-  },speed);
+  let running=false;
+
+  function scramble(){
+    if(running)return;
+    running=true;
+    const total=10+Math.floor(Math.random()*6); // 10-15 random flips
+    let i=0;
+    const iv=setInterval(function(){
+      el.style.fontFamily=fonts[Math.floor(Math.random()*fonts.length)];
+      i++;
+      if(i>=total){
+        clearInterval(iv);
+        el.style.fontFamily=finalFont;
+        running=false;
+      }
+    },50+Math.random()*30); // 50-80ms per flip, slightly random timing
+  }
+
+  // Run on load
+  scramble();
+
+  // Run on tap/click
+  el.style.cursor='pointer';
+  el.addEventListener('click',function(e){
+    e.stopPropagation();
+    scramble();
+  });
 })();
 
 // Featured dropdown toggle
