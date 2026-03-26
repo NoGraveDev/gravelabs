@@ -148,7 +148,7 @@ a{color:inherit;text-decoration:none}
 .dogs-scroll{overflow:hidden;padding:0;position:relative}
 .dogs-track{display:flex;gap:12px;width:max-content;animation:dog-scroll 25s linear infinite}
 .dogs-track:hover{animation-play-state:paused}
-@keyframes dog-scroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+@keyframes dog-scroll{0%{transform:translateX(0)}100%{transform:translateX(var(--scroll-dist,-25%))}}
 .dog-card{flex-shrink:0;width:clamp(140px,18vw,220px);border-radius:16px;overflow:hidden;cursor:pointer;position:relative;transition:all 0.4s cubic-bezier(0.16,1,0.3,1)}
 .dog-card:hover{transform:translateY(-8px);box-shadow:0 20px 60px rgba(0,0,0,0.5)}
 .dog-card img{width:100%;aspect-ratio:1;object-fit:cover;display:block;image-rendering:pixelated}
@@ -487,16 +487,26 @@ const dogs=[
 const scrollContainer=document.getElementById('dogsScroll');
 const track=document.createElement('div');
 track.className='dogs-track';
-// Duplicate dogs for seamless infinite loop
-[...dogs,...dogs].forEach((d,i)=>{
-  const idx=i%dogs.length;
-  const el=document.createElement('div');
-  el.className='dog-card';
-  el.dataset.dog=idx;
-  el.innerHTML=`<img src="${d.img}" alt="#${d.id}" loading="lazy"><div class="dog-card-id"><span>#${d.id}</span><span class="dog-card-rank">Rank ${d.rank.toLocaleString()}</span></div>`;
-  track.appendChild(el);
-});
+// Build enough copies for seamless infinite loop (4x ensures no gaps)
+const copies=4;
+for(let c=0;c<copies;c++){
+  dogs.forEach((d,idx)=>{
+    const el=document.createElement('div');
+    el.className='dog-card';
+    el.dataset.dog=idx;
+    el.innerHTML=`<img src="${d.img}" alt="#${d.id}" loading="lazy"><div class="dog-card-id"><span>#${d.id}</span><span class="dog-card-rank">Rank ${d.rank.toLocaleString()}</span></div>`;
+    track.appendChild(el);
+  });
+}
 scrollContainer.appendChild(track);
+// Calculate exact width of one set for perfect loop
+requestAnimationFrame(()=>{
+  const oneSet=track.scrollWidth/copies;
+  track.style.animation='none';
+  track.offsetHeight; // force reflow
+  track.style.setProperty('--scroll-dist','-'+oneSet+'px');
+  track.style.animation='dog-scroll 25s linear infinite';
+});
 
 // Modal
 const modal=document.getElementById('dogModal'),dmImg=document.getElementById('dmImg'),dmId=document.getElementById('dmId'),dmRank=document.getElementById('dmRank'),dmTraits=document.getElementById('dmTraits'),dmFloor=document.getElementById('dmFloor'),dmNote=document.getElementById('dmNote');
