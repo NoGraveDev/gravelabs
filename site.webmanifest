@@ -1,0 +1,13 @@
+{
+  "name": "GRAVE — Audio Engineer & Web3 Creator",
+  "short_name": "GRAVE",
+  "description": "Audio engineer, front of house engineer, producer, musician, and digital artist. Creator of ℏBUDS, building at the intersection of audio, code, and blockchain.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#08070b",
+  "theme_color": "#08070b",
+  "icons": [
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}
