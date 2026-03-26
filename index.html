@@ -396,11 +396,11 @@ a { color: inherit; text-decoration: none; }
   letter-spacing: 1.5px;
 }
 
-/* Image-only grid */
+/* Image-only grid — 7 in a row */
 .dogs-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-  gap: 12px;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 10px;
 }
 
 .dcard {
@@ -609,14 +609,14 @@ footer {
 /* ── MOBILE ── */
 @media (max-width: 700px) {
   .project-cards { grid-template-columns: 1fr; gap: 12px; }
-  .dogs-grid { grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  .dogs-grid { grid-template-columns: repeat(7, 1fr); gap: 6px; }
   .dogs-summary { grid-template-columns: repeat(2, 1fr); }
   .dog-modal { max-width: 90vw; }
   .pcard { padding: 20px; }
   .gradient-bg .orb { opacity: 0.05; }
 }
-@media (max-width: 380px) {
-  .dogs-grid { grid-template-columns: 1fr; }
+@media (max-width: 480px) {
+  .dogs-grid { grid-template-columns: repeat(4, 1fr); gap: 4px; }
 }
 </style>
 </head>
