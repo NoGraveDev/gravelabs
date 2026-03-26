@@ -67,7 +67,7 @@
   }
 }
 </script>
-<link href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&family=DM+Sans:wght@300;400;500&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&family=DM+Sans:wght@300;400;500&family=JetBrains+Mono:wght@300;400&family=Creepster&family=Permanent+Marker&family=Black+Ops+One&family=Monoton&family=Rubik+Glitch&family=Bungee+Shade&family=Press+Start+2P&family=Metal+Mania&family=Nosifer&family=Faster+One&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 html{background:#08070b;color:rgba(255,255,255,0.7);font-family:'Silkscreen',cursive;overflow-x:hidden;scroll-behavior:smooth;scroll-snap-type:y proximity}
@@ -230,7 +230,7 @@ a{color:inherit;text-decoration:none}
   <div class="hero-fade"></div>
   <div class="hero-overlay">
     <div class="hero-title-row" id="pfpClick" style="cursor:pointer" title="Click me 🐺">
-      <h1>GRAVE</h1>
+      <h1 id="graveTitle">GRAVE</h1>
       <a href="https://typemedia.net" target="_blank" class="tm-badge" onclick="event.stopPropagation()">
         <img src="typemedia-logo.jpg" alt="Type Media">
       </a>
@@ -401,6 +401,41 @@ a{color:inherit;text-decoration:none}
 <div class="foot-copy">© 2026 GraveLabs</div>
 
 <script>
+// === FONT SCRAMBLE on "GRAVE" ===
+(function(){
+  const el=document.getElementById('graveTitle');
+  if(!el)return;
+  const fonts=[
+    "'Creepster',cursive",
+    "'Permanent Marker',cursive",
+    "'Black Ops One',system-ui",
+    "'Monoton',cursive",
+    "'Rubik Glitch',system-ui",
+    "'Bungee Shade',system-ui",
+    "'Press Start 2P',monospace",
+    "'Metal Mania',cursive",
+    "'Nosifer',system-ui",
+    "'Faster One',system-ui",
+    "serif",
+    "monospace",
+    "Impact,sans-serif",
+    "'Courier New',monospace"
+  ];
+  const finalFont="'Silkscreen',cursive";
+  let i=0;
+  const total=14; // number of flips
+  const speed=55; // ms per flip
+  el.style.transition='none';
+  const iv=setInterval(function(){
+    el.style.fontFamily=fonts[i%fonts.length];
+    i++;
+    if(i>=total){
+      clearInterval(iv);
+      el.style.fontFamily=finalFont;
+    }
+  },speed);
+})();
+
 // Featured dropdown toggle
 document.getElementById('featToggle').addEventListener('click',function(){
   const panel=document.getElementById('featPanel');
