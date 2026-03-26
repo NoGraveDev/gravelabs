@@ -82,9 +82,11 @@ a{color:inherit;text-decoration:none}
 .dogs-stat-val{font-family:'Silkscreen',cursive;font-size:1.3rem;color:rgba(255,255,255,0.9)}
 .dogs-stat-lbl{font-family:'Silkscreen',cursive;font-size:0.45rem;color:rgba(255,255,255,0.2);letter-spacing:0.06em;text-transform:uppercase}
 
-.dogs-scroll{display:flex;gap:12px;overflow-x:auto;padding:0 clamp(24px,5vw,80px);scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none}
-.dogs-scroll::-webkit-scrollbar{display:none}
-.dog-card{flex-shrink:0;width:clamp(120px,16vw,220px);border-radius:16px;overflow:hidden;cursor:pointer;position:relative;scroll-snap-align:start;transition:all 0.4s cubic-bezier(0.16,1,0.3,1)}
+.dogs-scroll{overflow:hidden;padding:0;position:relative}
+.dogs-track{display:flex;gap:12px;width:max-content;animation:dog-scroll 25s linear infinite}
+.dogs-track:hover{animation-play-state:paused}
+@keyframes dog-scroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+.dog-card{flex-shrink:0;width:clamp(140px,18vw,220px);border-radius:16px;overflow:hidden;cursor:pointer;position:relative;transition:all 0.4s cubic-bezier(0.16,1,0.3,1)}
 .dog-card:hover{transform:translateY(-8px);box-shadow:0 20px 60px rgba(0,0,0,0.5)}
 .dog-card img{width:100%;aspect-ratio:1;object-fit:cover;display:block;image-rendering:pixelated}
 .dog-card-id{position:absolute;bottom:0;left:0;right:0;padding:32px 12px 10px;background:linear-gradient(transparent,rgba(0,0,0,0.8));font-family:'Silkscreen',cursive;font-size:0.6rem;color:rgba(255,255,255,0.6);display:flex;justify-content:space-between;align-items:flex-end;opacity:0;transition:opacity 0.3s}
@@ -148,8 +150,8 @@ a{color:inherit;text-decoration:none}
   .dogs-stat{text-align:left}
   .dogs-title{font-size:1.4rem}
   .dogs-label{font-size:0.5rem}
-  .dog-card{width:110px}
-  .dogs-scroll{gap:8px;padding:0 16px}
+  .dog-card{width:120px}
+  .dogs-track{gap:8px}
   .dog-card-id{opacity:1;font-size:0.5rem}
   .foot{flex-direction:column;gap:16px;text-align:center;padding:32px 16px 20px}
   .foot-copy{padding:0 16px 20px}
@@ -285,21 +287,26 @@ const dogs=[
   {id:1975,rank:9002,img:'dogs/1975.png',traits:{Background:'Aqua',Eyes:'Black',Head:'Builder'},key:'Builder',floor:25000}
 ];
 
-// Render dog cards (horizontal scroll)
-const scroll=document.getElementById('dogsScroll');
-dogs.forEach((d,i)=>{
+// Render dog cards (auto-scroll carousel)
+const scrollContainer=document.getElementById('dogsScroll');
+const track=document.createElement('div');
+track.className='dogs-track';
+// Duplicate dogs for seamless infinite loop
+[...dogs,...dogs].forEach((d,i)=>{
+  const idx=i%dogs.length;
   const el=document.createElement('div');
   el.className='dog-card';
-  el.dataset.dog=i;
+  el.dataset.dog=idx;
   el.innerHTML=`<img src="${d.img}" alt="#${d.id}" loading="lazy"><div class="dog-card-id"><span>#${d.id}</span><span class="dog-card-rank">Rank ${d.rank.toLocaleString()}</span></div>`;
-  scroll.appendChild(el);
+  track.appendChild(el);
 });
+scrollContainer.appendChild(track);
 
 // Modal
 const modal=document.getElementById('dogModal'),dmImg=document.getElementById('dmImg'),dmId=document.getElementById('dmId'),dmRank=document.getElementById('dmRank'),dmTraits=document.getElementById('dmTraits'),dmFloor=document.getElementById('dmFloor'),dmNote=document.getElementById('dmNote');
 function openDog(i){const d=dogs[i];dmImg.src=d.img;dmId.textContent='#'+d.id;dmRank.textContent='Rank #'+d.rank.toLocaleString()+' / 10,000';dmTraits.innerHTML=Object.values(d.traits).map(v=>`<span class="mt${v===d.key?' key':''}">${v}</span>`).join('');if(d.priceless){dmFloor.innerHTML='<span class="fl">Value</span><span class="fv priceless">PRICELESS</span>'}else{const u='~$'+(d.floor*DOGE_USD/1000).toFixed(1)+'k';dmFloor.innerHTML=`<span class="fl">Floor</span><span class="fv">Ð${d.floor.toLocaleString()}</span><span class="fu">${u}</span>`}dmNote.textContent=d.note||'';modal.classList.add('open');document.body.style.overflow='hidden'}
 function closeDog(){modal.classList.remove('open');document.body.style.overflow=''}
-scroll.addEventListener('click',e=>{const c=e.target.closest('.dog-card');if(c)openDog(+c.dataset.dog)});
+scrollContainer.addEventListener('click',e=>{const c=e.target.closest('.dog-card');if(c)openDog(+c.dataset.dog)});
 document.getElementById('dmClose').addEventListener('click',closeDog);
 modal.addEventListener('click',e=>{if(e.target===modal)closeDog()});
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeDog()});
